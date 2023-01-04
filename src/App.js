@@ -4,20 +4,21 @@ import axios from "./AxiosSetup";
 
 function App() {
   const apiKey = process.env.REACT_APP_ALPHA_VANTAGE_KEY;
-  console.log(apiKey);
   const currency = "USD";
   const endpoints = {
-    BTCUSD: `query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=${currency}&apikey=${apiKey}`,
+    current: `query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=${currency}&apikey=${apiKey}`,
+    weekly: `query?function=DIGITAL_CURRENCY_WEEKLY&symbol=BTC&market=${currency}&apikey=${apiKey}`,
   };
 
   const [price, setPrice] = useState();
   useEffect(() => {
     async function dataFetch() {
       await axios
-        .get(endpoints.BTCUSD)
+        .get(endpoints.weekly)
         .then((response) =>
           console.log(
-            response.data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
+            //response.data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
+            Object.keys(response.data)
           )
         )
         .catch((error) => console.log(error));
