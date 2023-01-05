@@ -11,24 +11,40 @@ function App() {
   };
   //the current price
   const [price, setPrice] = useState(0);
+  //intraday variables
   const [day, setDay] = useState();
   const [dayPrice, setDayPrice] = useState();
+  //weekly price variables
   const [week, setWeek] = useState();
-  const [weekPrice, setWeekPrice] = useState();
+  const [weekPrices, setWeekPrices] = useState();
+  const [weeks, setWeeks] = useState();
+  const [weeklyPriceData, setWeeklyPriceData] = useState();
+
+  //monthly price variables
+  const [month, setMonth] = useState();
   const [monthPrice, setMonthPrice] = useState();
 
   async function dataFetchWeekly() {
     await axios
       .get(endpoints.weekly)
       .then((response) => {
-        console.log(Object.keys(response.data));
-        console.log(response.data["Time Series (Digital Currency Weekly)"]);
+        setWeeklyPriceData(
+          response.data["Time Series (Digital Currency Weekly)"]
+        );
+        let dates = Object.keys(
+          response.data["Time Series (Digital Currency Weekly)"]
+        );
+        setWeeks(dates);
+        //console.log("this is weekly data", weeklyPriceData[weeks[0]]);
+        setWeekPrices(weeklyPriceData[weeks[0]]);
+        console.log("weekly useState", weeklyPriceData[weeks[0]]);
       })
       .catch((error) => {
         console.log(error);
         console.log("weekly prices not retrieved");
       });
   }
+
   async function dataFetchCurrent() {
     await axios
       .get(endpoints.current)
@@ -37,15 +53,16 @@ function App() {
           response.data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
         );
       })
-      .then(console.log(price))
+      .then(console.log("this is price useState", price))
       .catch((error) => {
         console.log(error);
         console.log("current price not retrieved");
       });
   }
+
   useEffect(() => {
-    dataFetchWeekly();
     dataFetchCurrent();
+    dataFetchWeekly();
   }, []);
 
   return (
@@ -53,6 +70,11 @@ function App() {
       <header className="App-header">
         <p>A fun little application exploring the Alpha Vantage API</p>
         <p>${Math.round(price)}</p>
+        <span>Date:{weeks[0]}</span>
+        <span>Open:${Math.round(weekPrices["1a. open (USD)"])}</span>
+        <span>Close:${Math.round(weekPrices["4a. close (USD)"])}</span>
+        <span>High:${Math.round(weekPrices["2a. high (USD)"])}</span>
+        <span>Low:${Math.round(weekPrices["3a. low (USD)"])}</span>
         <a
           className="App-link"
           href="https://www.alphavantage.co/"
