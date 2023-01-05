@@ -9,35 +9,50 @@ function App() {
     current: `query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=${currency}&apikey=${apiKey}`,
     weekly: `query?function=DIGITAL_CURRENCY_WEEKLY&symbol=BTC&market=${currency}&apikey=${apiKey}`,
   };
+  //the current price
+  const [price, setPrice] = useState(0);
+  const [day, setDay] = useState();
+  const [dayPrice, setDayPrice] = useState();
+  const [week, setWeek] = useState();
+  const [weekPrice, setWeekPrice] = useState();
+  const [monthPrice, setMonthPrice] = useState();
 
-  const [price, setPrice] = useState();
+  async function dataFetchWeekly() {
+    await axios
+      .get(endpoints.weekly)
+      .then((response) => {
+        console.log(Object.keys(response.data));
+        console.log(response.data["Time Series (Digital Currency Weekly)"]);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("weekly prices not retrieved");
+      });
+  }
+  async function dataFetchCurrent() {
+    await axios
+      .get(endpoints.current)
+      .then((response) => {
+        setPrice(
+          response.data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
+        );
+      })
+      .then(console.log(price))
+      .catch((error) => {
+        console.log(error);
+        console.log("current price not retrieved");
+      });
+  }
   useEffect(() => {
-    async function dataFetch() {
-      await axios
-        .get(endpoints.weekly)
-        .then((response) =>
-          console.log(
-            //response.data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
-            Object.keys(response.data)
-          )
-        )
-        .catch((error) => console.log(error));
-    }
-    dataFetch();
+    dataFetchWeekly();
+    dataFetchCurrent();
   }, []);
-
-  // fetch(
-  //   `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY_EXTENDED&symbol=IBM&interval=15min&slice=year1month1&apikey=${apiKey}`
-  // )
-  //   .then((response) => response.JSONPARSE)
-  //   .then((data) => console.log(data))
-  //   .then(console.log("success"));
 
   return (
     <div className="App">
       <header className="App-header">
         <p>A fun little application exploring the Alpha Vantage API</p>
-        <p></p>
+        <p>${Math.round(price)}</p>
         <a
           className="App-link"
           href="https://www.alphavantage.co/"
