@@ -12,53 +12,19 @@ function App() {
   const [loading, setLoading] = useState(true);
   //the current price
   const [price, setPrice] = useState(0);
-  //intraday variables
-  const [day, setDay] = useState();
-  const [dayPrice, setDayPrice] = useState();
+
   //weekly price variables
-  const [week, setWeek] = useState();
+  // const [week, setWeek] = useState();
   const [weekPrices, setWeekPrices] = useState({
     "1a. open (USD)": 0,
     "4a. close (USD)": 0,
     "2a. high (USD)": 0,
     "3a. low (USD)": 0,
   });
-
   const [weeks, setWeeks] = useState([0]);
-  const [weeklyPriceData, setWeeklyPriceData] = useState();
+  const [weeklyPriceData, setWeeklyPriceData] = useState({});
 
-  //monthly price variables
-  // const [month, setMonth] = useState();
-  // const [monthPrice, setMonthPrice] = useState();
   useEffect(() => {
-    async function dataFetchWeekly() {
-      await axios
-        .get(endpoints.weekly)
-        .then((response) => {
-          console.log(
-            "this response.data",
-            response.data["Time Series (Digital Currency Weekly)"]
-          );
-          let data = response.data;
-          console.log("this is data", data);
-          setWeeklyPriceData(data["Time Series (Digital Currency Weekly)"]);
-          console.log("this is usestate variable", weeklyPriceData);
-
-          let dates = Object.keys(
-            response.data["Time Series (Digital Currency Weekly)"]
-          );
-          setWeeks(dates);
-          // console.log("this is weekly data", weeklyPriceData[weeks[0]]);
-          setWeekPrices(weeklyPriceData[weeks[0]]);
-          console.log("weekly useState", weeklyPriceData[weeks[0]]);
-        })
-        .then(setLoading(false))
-        .catch((error) => {
-          console.log(error);
-          console.log("weekly prices not retrieved");
-        });
-    }
-
     async function dataFetchCurrent() {
       await axios
         .get(endpoints.current)
@@ -67,16 +33,41 @@ function App() {
             response.data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
           );
         })
-        .then(console.log("this is price useState", price))
+        .then(console.log("Success!", "This is price useState", price))
         .catch((error) => {
           console.log(error);
           console.log("current price not retrieved");
         });
     }
 
-    // dataFetchCurrent();
+    async function dataFetchWeekly() {
+      // setLoading(true);
+      const data = await axios
+        .get(endpoints.weekly)
+        .then((response) => {
+          const data = response.data["Time Series (Digital Currency Weekly)"];
+          console.log("this is data", data);
+          setWeeklyPriceData(data);
+          setWeeks(Object.keys(data));
+          setWeekPrices(data[Object.keys(data)[0]]);
+        })
+        // .then(() => {
+        //   console.log("weeklyPriceData useState", weeklyPriceData);
+        //   console.log("this is weekly data", weeklyPriceData[weeks[0]]);
+        //   console.log("weekly useState", weeklyPriceData[weeks[0]]);
+        // })
+        .then(setLoading(false))
+        .catch((error) => {
+          setLoading(true);
+          console.log("this is the error", error);
+          console.log("weekly prices not retrieved");
+        });
+    }
+
+    dataFetchCurrent();
     dataFetchWeekly();
   }, []);
+
   if (loading)
     return (
       <div className="App">
