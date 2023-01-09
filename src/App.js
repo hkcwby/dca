@@ -7,7 +7,9 @@ function App() {
   const currency = "USD";
   const endpoints = {
     current: `query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=${currency}&apikey=${apiKey}`,
+    daily: `query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=${currency}&apikey=${apiKey}&outputsize=compact`,
     weekly: `query?function=DIGITAL_CURRENCY_WEEKLY&symbol=BTC&market=${currency}&apikey=${apiKey}&outputsize=compact`,
+    monthly: `query?function=DIGITAL_CURRENCY_MONTHLY&symbol=BTC&market=${currency}&apikey=${apiKey}&outputsize=compact`,
   };
   const [loading, setLoading] = useState(true);
   //the current price
@@ -23,6 +25,17 @@ function App() {
   });
   const [weeks, setWeeks] = useState([0]);
   const [weeklyPriceData, setWeeklyPriceData] = useState({});
+
+  //monthly price variables
+  // const [month, setMonth] = useState();
+  const [monthPrices, setMonthPrices] = useState({
+    "1a. open (USD)": 0,
+    "4a. close (USD)": 0,
+    "2a. high (USD)": 0,
+    "3a. low (USD)": 0,
+  });
+  const [months, setMonths] = useState([0]);
+  const [monthlyPriceData, setMonthlyPriceData] = useState({});
 
   useEffect(() => {
     async function dataFetchCurrent() {
@@ -51,11 +64,6 @@ function App() {
           setWeeks(Object.keys(data));
           setWeekPrices(data[Object.keys(data)[0]]);
         })
-        // .then(() => {
-        //   console.log("weeklyPriceData useState", weeklyPriceData);
-        //   console.log("this is weekly data", weeklyPriceData[weeks[0]]);
-        //   console.log("weekly useState", weeklyPriceData[weeks[0]]);
-        // })
         .then(setLoading(false))
         .catch((error) => {
           setLoading(true);
@@ -64,8 +72,27 @@ function App() {
         });
     }
 
-    dataFetchCurrent();
-    dataFetchWeekly();
+    async function dataFetchMonthly() {
+      // setLoading(true);
+      const data = await axios
+        .get(endpoints.monthly)
+        .then((response) => {
+          const data = response.data["Time Series (Digital Currency Monthly)"];
+          console.log("this is data", data);
+          setMonthlyPriceData(data);
+          setMonths(Object.keys(data));
+          setMonthPrices(data[Object.keys(data)[0]]);
+        })
+        .then(setLoading(false))
+        .catch((error) => {
+          setLoading(true);
+          console.log("this is the error", error);
+          console.log("weekly prices not retrieved");
+        });
+    }
+    // dataFetchCurrent();
+    // dataFetchWeekly();
+    dataFetchMonthly();
   }, []);
 
   if (loading)
@@ -90,11 +117,11 @@ function App() {
       <header className="App-header">
         <p>A fun little application exploring the Alpha Vantage API</p>
         <p>${Math.round(price)}</p>
-        <span>Date:{weeks[0]}</span>
-        <span>Open:${Math.round(weekPrices["1a. open (USD)"])}</span>
-        <span>Close:${Math.round(weekPrices["4a. close (USD)"])}</span>
-        <span>High:${Math.round(weekPrices["2a. high (USD)"])}</span>
-        <span>Low:${Math.round(weekPrices["3a. low (USD)"])}</span>
+        <span>Date:{months[0]}</span>
+        <span>Open:${Math.round(monthPrices["1a. open (USD)"])}</span>
+        <span>Close:${Math.round(monthPrices["4a. close (USD)"])}</span>
+        <span>High:${Math.round(monthPrices["2a. high (USD)"])}</span>
+        <span>Low:${Math.round(monthPrices["3a. low (USD)"])}</span>
         <a
           className="App-link"
           href="https://www.alphavantage.co/"
