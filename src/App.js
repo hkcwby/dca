@@ -148,6 +148,22 @@ function App() {
       <header className="App-header">
         <p>A fun little application exploring the Alpha Vantage API</p>
         <p>${Math.round(price)}</p>
+
+        <select className="select">
+          <option id="searchType" disabled selected hidden>
+            Search Type
+          </option>
+          <option id="searchType" key="store">
+            day prices
+          </option>
+          <option id="searchType" key="product">
+            Week Prices
+          </option>
+          <option id="searchType" key="product">
+            Month Prices
+          </option>
+        </select>
+
         <span>Date:{days[0]}</span>
         <span>Open:${Math.round(dayPrices["1a. open (USD)"])}</span>
         <span>Close:${Math.round(dayPrices["4a. close (USD)"])}</span>
