@@ -15,6 +15,17 @@ function App() {
   //the current price
   const [price, setPrice] = useState(0);
 
+  //daily price variables
+  // const [day, setDay] = useState();
+  const [dayPrices, setDayPrices] = useState({
+    "1a. open (USD)": 0,
+    "4a. close (USD)": 0,
+    "2a. high (USD)": 0,
+    "3a. low (USD)": 0,
+  });
+  const [days, setDays] = useState([0]);
+  const [dailyPriceData, setDailyPriceData] = useState({});
+
   //weekly price variables
   // const [week, setWeek] = useState();
   const [weekPrices, setWeekPrices] = useState({
@@ -53,6 +64,25 @@ function App() {
         });
     }
 
+    async function dataFetchDaily() {
+      // setLoading(true);
+      const data = await axios
+        .get(endpoints.daily)
+        .then((response) => {
+          const data = response.data["Time Series (Digital Currency Daily)"];
+          console.log("this is data", data);
+          setDailyPriceData(data);
+          setDays(Object.keys(data));
+          setDayPrices(data[Object.keys(data)[0]]);
+        })
+        .then(setLoading(false))
+        .catch((error) => {
+          setLoading(true);
+          console.log("this is the error", error);
+          console.log("daily prices not retrieved");
+        });
+    }
+
     async function dataFetchWeekly() {
       // setLoading(true);
       const data = await axios
@@ -87,12 +117,13 @@ function App() {
         .catch((error) => {
           setLoading(true);
           console.log("this is the error", error);
-          console.log("weekly prices not retrieved");
+          console.log("monthly prices not retrieved");
         });
     }
     // dataFetchCurrent();
+    dataFetchDaily();
     // dataFetchWeekly();
-    dataFetchMonthly();
+    // dataFetchMonthly();
   }, []);
 
   if (loading)
@@ -117,11 +148,11 @@ function App() {
       <header className="App-header">
         <p>A fun little application exploring the Alpha Vantage API</p>
         <p>${Math.round(price)}</p>
-        <span>Date:{months[0]}</span>
-        <span>Open:${Math.round(monthPrices["1a. open (USD)"])}</span>
-        <span>Close:${Math.round(monthPrices["4a. close (USD)"])}</span>
-        <span>High:${Math.round(monthPrices["2a. high (USD)"])}</span>
-        <span>Low:${Math.round(monthPrices["3a. low (USD)"])}</span>
+        <span>Date:{days[0]}</span>
+        <span>Open:${Math.round(dayPrices["1a. open (USD)"])}</span>
+        <span>Close:${Math.round(dayPrices["4a. close (USD)"])}</span>
+        <span>High:${Math.round(dayPrices["2a. high (USD)"])}</span>
+        <span>Low:${Math.round(dayPrices["3a. low (USD)"])}</span>
         <a
           className="App-link"
           href="https://www.alphavantage.co/"
