@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "./AxiosSetup";
 
 function App() {
+  //setting up important core values and references
   const apiKey = process.env.REACT_APP_ALPHA_VANTAGE_KEY;
   const currency = "USD";
   const endpoints = {
@@ -11,9 +12,34 @@ function App() {
     weekly: `query?function=DIGITAL_CURRENCY_WEEKLY&symbol=BTC&market=${currency}&apikey=${apiKey}&outputsize=compact`,
     monthly: `query?function=DIGITAL_CURRENCY_MONTHLY&symbol=BTC&market=${currency}&apikey=${apiKey}&outputsize=compact`,
   };
+
+  //A boolean to toggle a loading screen whilst data is being fetched
   const [loading, setLoading] = useState(true);
-  //the current price
+
+  //the current price displayed for refernce
   const [price, setPrice] = useState(0);
+
+  //the current price explorer focus daily/weekly/monthlty
+  const [dataType, setDataType] = useState("");
+  const [dateTimeMenuValues, setDateTimeMenuValues] = useState([]);
+
+  // function to update the data type and unlock the date time option
+  function updateSearchCriteria(selection) {
+    switch (selection) {
+      case "Day Prices":
+        setDateTimeMenuValues(days);
+        break;
+      case "Week Prices":
+        setDateTimeMenuValues(weeks);
+      case "Month Prices Prices":
+        setDateTimeMenuValues(months);
+        break;
+      default:
+        setDateTimeMenuValues(["ERROR"]);
+    }
+    setDataType(selection);
+    document.querySelector("#dateTimeSelect").disabled = false;
+  }
 
   //daily price variables
   // const [day, setDay] = useState();
@@ -89,7 +115,6 @@ function App() {
         .get(endpoints.weekly)
         .then((response) => {
           const data = response.data["Time Series (Digital Currency Weekly)"];
-          console.log("this is data", data);
           setWeeklyPriceData(data);
           setWeeks(Object.keys(data));
           setWeekPrices(data[Object.keys(data)[0]]);
@@ -108,7 +133,6 @@ function App() {
         .get(endpoints.monthly)
         .then((response) => {
           const data = response.data["Time Series (Digital Currency Monthly)"];
-          console.log("this is data", data);
           setMonthlyPriceData(data);
           setMonths(Object.keys(data));
           setMonthPrices(data[Object.keys(data)[0]]);
@@ -120,7 +144,7 @@ function App() {
           console.log("monthly prices not retrieved");
         });
     }
-    // dataFetchCurrent();
+    dataFetchCurrent();
     dataFetchDaily();
     // dataFetchWeekly();
     // dataFetchMonthly();
@@ -149,18 +173,32 @@ function App() {
         <p>A fun little application exploring the Alpha Vantage API</p>
         <p>${Math.round(price)}</p>
 
-        <select className="select">
-          <option id="searchType" disabled selected hidden>
+        <select
+          className="select"
+          onChange={(e) => updateSearchCriteria(e.target.value)}
+        >
+          <option id="searchType" disabled defaultValue hidden>
             Search Type
           </option>
-          <option id="searchType" key="store">
-            day prices
+          <option id="searchType" key="day">
+            Day Prices
           </option>
-          <option id="searchType" key="product">
+          <option id="searchType" key="week">
             Week Prices
           </option>
-          <option id="searchType" key="product">
+          <option id="searchType" key="month">
             Month Prices
+          </option>
+        </select>
+
+        <select
+          className="select"
+          id="dateTimeSelect"
+          disabled
+          onChange={(e) => updateSearchCriteria(e.target.value)}
+        >
+          <option id="searchType" disabled defaultValue hidden>
+            Time Period
           </option>
         </select>
 
