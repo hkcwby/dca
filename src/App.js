@@ -5,7 +5,12 @@ import axios from "./AxiosSetup";
 function App() {
   //setting up important core values and references
   const apiKey = process.env.REACT_APP_ALPHA_VANTAGE_KEY;
-  const currency = "USD";
+
+  const [currency, setCurrency] = useState("USD");
+  function updateCurrency(selection) {
+    setCurrency(selection);
+  }
+
   const endpoints = {
     current: `query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=${currency}&apikey=${apiKey}`,
     daily: `query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=${currency}&apikey=${apiKey}&outputsize=compact`,
@@ -16,8 +21,7 @@ function App() {
   //A boolean to toggle a loading screen whilst data is being fetched
   const [loading, setLoading] = useState(true);
 
-  //the current price displayed for refernce
-  const [price, setPrice] = useState(0);
+  //Currency tracking variable and update function
 
   //the current price explorer focus daily/weekly/monthlty
   const [dataType, setDataType] = useState("");
@@ -40,6 +44,9 @@ function App() {
     setDataType(selection);
     document.querySelector("#dateTimeSelect").disabled = false;
   }
+
+  //the current price displayed for refernce
+  const [price, setPrice] = useState(0);
 
   //daily price variables
   // const [day, setDay] = useState();
@@ -91,7 +98,7 @@ function App() {
     }
 
     async function dataFetchDaily() {
-      // setLoading(true);
+      setLoading(true);
       const data = await axios
         .get(endpoints.daily)
         .then((response) => {
@@ -110,7 +117,7 @@ function App() {
     }
 
     async function dataFetchWeekly() {
-      // setLoading(true);
+      setLoading(true);
       const data = await axios
         .get(endpoints.weekly)
         .then((response) => {
@@ -128,7 +135,7 @@ function App() {
     }
 
     async function dataFetchMonthly() {
-      // setLoading(true);
+      setLoading(true);
       const data = await axios
         .get(endpoints.monthly)
         .then((response) => {
@@ -144,10 +151,32 @@ function App() {
           console.log("monthly prices not retrieved");
         });
     }
-    dataFetchCurrent();
-    dataFetchDaily();
+    // dataFetchCurrent();
+    // dataFetchDaily();
     // dataFetchWeekly();
     // dataFetchMonthly();
+  }, [dataType]);
+
+  //run on mount to retrieve the active market price
+
+  useEffect(() => {
+    async function dataFetchCurrent() {
+      await axios
+        .get(endpoints.current)
+        .then((response) => {
+          setPrice(
+            response.data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
+          );
+        })
+        .then(console.log("Success!", "This is price useState", price))
+        .then(setLoading(false))
+        .catch((error) => {
+          console.log(error);
+          console.log("current price not retrieved");
+        });
+    }
+
+    dataFetchCurrent();
   }, []);
 
   if (loading)
@@ -171,13 +200,36 @@ function App() {
     <div className="App">
       <header className="App-header">
         <p>A fun little application exploring the Alpha Vantage API</p>
-        <p>${Math.round(price)}</p>
+        <p>{`$${Math.round(price)}  ${currency}`}</p>
+
+        <select
+          className="select"
+          onChange={(e) => updateCurrency(e.target.value)}
+          defaultValue="Select Currency"
+        >
+          <option id="searchType" disabled value="Select Currency">
+            Select Currency
+          </option>
+          <option id="searchType" key="USD">
+            USD
+          </option>
+          <option id="searchType" key="EUR">
+            EUR
+          </option>
+          <option id="searchType" key="JPY">
+            JPY
+          </option>
+          <option id="searchType" key="CNY">
+            CNY
+          </option>
+        </select>
 
         <select
           className="select"
           onChange={(e) => updateSearchCriteria(e.target.value)}
+          defaultValue="Search Type"
         >
-          <option id="searchType" disabled defaultValue hidden>
+          <option id="searchType" disabled value="Search Type">
             Search Type
           </option>
           <option id="searchType" key="day">
@@ -202,11 +254,11 @@ function App() {
           </option>
         </select>
 
-        <span>Date:{days[0]}</span>
+        {/* <span>Date:{days[0]}</span>
         <span>Open:${Math.round(dayPrices["1a. open (USD)"])}</span>
         <span>Close:${Math.round(dayPrices["4a. close (USD)"])}</span>
         <span>High:${Math.round(dayPrices["2a. high (USD)"])}</span>
-        <span>Low:${Math.round(dayPrices["3a. low (USD)"])}</span>
+        <span>Low:${Math.round(dayPrices["3a. low (USD)"])}</span> */}
         <a
           className="App-link"
           href="https://www.alphavantage.co/"
