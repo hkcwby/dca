@@ -8,6 +8,7 @@ function App() {
 
   const [currency, setCurrency] = useState("USD");
   function updateCurrency(selection) {
+    console.log("this is selection", selection);
     setCurrency(selection);
   }
 
@@ -25,17 +26,20 @@ function App() {
 
   //the current price explorer focus daily/weekly/monthlty
   const [dataType, setDataType] = useState("");
-  const [dateTimeMenuValues, setDateTimeMenuValues] = useState([]);
+  const [dateTimeMenuValues, setDateTimeMenuValues] = useState();
 
   // function to update the data type and unlock the date time option
   function updateSearchCriteria(selection) {
+    let item = selection;
+    console.log("this is selection", item);
     switch (selection) {
-      case "Day Prices":
+      case "daily":
         setDateTimeMenuValues(days);
         break;
-      case "Week Prices":
+      case "weekly":
         setDateTimeMenuValues(weeks);
-      case "Month Prices Prices":
+        console.log("this is weeks", weeks);
+      case "monthly":
         setDateTimeMenuValues(months);
         break;
       default:
@@ -43,6 +47,7 @@ function App() {
     }
     setDataType(selection);
     document.querySelector("#dateTimeSelect").disabled = false;
+    console.log(dateTimeMenuValues);
   }
 
   //the current price displayed for refernce
@@ -109,6 +114,7 @@ function App() {
           setDayPrices(data[Object.keys(data)[0]]);
         })
         .then(setLoading(false))
+        .then(console.log("success daily"))
         .catch((error) => {
           setLoading(true);
           console.log("this is the error", error);
@@ -118,15 +124,17 @@ function App() {
 
     async function dataFetchWeekly() {
       setLoading(true);
-      const data = await axios
+      await axios
         .get(endpoints.weekly)
         .then((response) => {
-          const data = response.data["Time Series (Digital Currency Weekly)"];
-          setWeeklyPriceData(data);
-          setWeeks(Object.keys(data));
-          setWeekPrices(data[Object.keys(data)[0]]);
+          const responseData =
+            response.data["Time Series (Digital Currency Weekly)"];
+          setWeeklyPriceData(responseData);
+          setWeeks(Object.keys(responseData));
+          setWeekPrices(responseData[Object.keys(responseData)[0]]);
         })
         .then(setLoading(false))
+        .then(console.log("success weekly", weeks))
         .catch((error) => {
           setLoading(true);
           console.log("this is the error", error);
@@ -139,12 +147,14 @@ function App() {
       const data = await axios
         .get(endpoints.monthly)
         .then((response) => {
-          const data = response.data["Time Series (Digital Currency Monthly)"];
-          setMonthlyPriceData(data);
-          setMonths(Object.keys(data));
-          setMonthPrices(data[Object.keys(data)[0]]);
+          const responseData =
+            response.data["Time Series (Digital Currency Monthly)"];
+          setMonthlyPriceData(responseData);
+          setMonths(Object.keys(responseData));
+          setMonthPrices(responseData[Object.keys(responseData)[0]]);
         })
         .then(setLoading(false))
+        .then(console.log("success monthly"))
         .catch((error) => {
           setLoading(true);
           console.log("this is the error", error);
@@ -153,7 +163,7 @@ function App() {
     }
     // dataFetchCurrent();
     // dataFetchDaily();
-    // dataFetchWeekly();
+    dataFetchWeekly();
     // dataFetchMonthly();
   }, [dataType]);
 
@@ -168,7 +178,6 @@ function App() {
             response.data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
           );
         })
-        .then(console.log("Success!", "This is price useState", price))
         .then(setLoading(false))
         .catch((error) => {
           console.log(error);
@@ -200,7 +209,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <p>A fun little application exploring the Alpha Vantage API</p>
-        <p>{`$${Math.round(price)}  ${currency}`}</p>
+        <p>{`Current Price: $${Math.round(price)}  ${currency}`}</p>
 
         <select
           className="select"
@@ -232,14 +241,14 @@ function App() {
           <option id="searchType" disabled value="Search Type">
             Search Type
           </option>
-          <option id="searchType" key="day">
-            Day Prices
+          <option id="searchType" key="day" value="daily">
+            daily
           </option>
-          <option id="searchType" key="week">
-            Week Prices
+          <option id="searchType" key="week" value="weekly">
+            weekly
           </option>
-          <option id="searchType" key="month">
-            Month Prices
+          <option id="searchType" key="month" value="monthly">
+            monthly
           </option>
         </select>
 
@@ -247,11 +256,12 @@ function App() {
           className="select"
           id="dateTimeSelect"
           disabled
-          onChange={(e) => updateSearchCriteria(e.target.value)}
+          // onChange={(e) => updateSearchCriteria(e.target.value)}
         >
           <option id="searchType" disabled defaultValue hidden>
             Time Period
           </option>
+          <option>{dateTimeMenuValues}</option>
         </select>
 
         {/* <span>Date:{days[0]}</span>
