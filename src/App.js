@@ -8,7 +8,6 @@ function App() {
 
   const [currency, setCurrency] = useState("USD");
   function updateCurrency(selection) {
-    console.log("this is selection", selection);
     setCurrency(selection);
   }
   //the various end points used for fetching data
@@ -23,7 +22,7 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   //the values to display, these need to be fetched
-  const [menuValues, setMenuValues] = useState(["testing"]);
+  const [menuValues, setMenuValues] = useState(["-"]);
 
   // function to update the data type and unlock the date time option
   function updateSearchCriteria(selection) {
@@ -34,7 +33,7 @@ function App() {
 
   //the current price displayed for refernce
   const [currentPrice, setCurrentPrice] = useState(0);
-
+  const [priceData, setPriceData] = useState([]);
   const [prices, setPrices] = useState({
     "1a. open (USD)": 0,
     "4a. close (USD)": 0,
@@ -42,132 +41,54 @@ function App() {
     "3a. low (USD)": 0,
   });
 
+  function updatePrices(selection) {
+    console.log("this is price data", priceData);
+    console.log("this is the selected date", selection);
+    const data = priceData[selection];
+    console.log(data);
+    setPrices({
+      [`1a. open (${currency})`]: data[[`1a. open (${currency})`]],
+      [`4a. close (${currency})`]: data[[`4a. close (${currency})`]],
+      [`2a. high (${currency})`]: data[[`2a. high (${currency})`]],
+      [`3a. low (${currency})`]: data[[`3a. low (${currency})`]],
+    });
+  }
+
   async function dataFetch(type) {
-    setLoading(true);
+    // setLoading(true);
+    console.log("this is endpoint", endpoints[type]);
     await axios
       .get(endpoints[type])
       .then((response) => {
-        // console.log(`Time Series (Digital Currency ${type})`);
+        console.log("this is response", response);
+        console.log(`Time Series (Digital Currency ${type})`);
         const data = response.data[`Time Series (Digital Currency ${type})`];
-        // console.log("this is data", data);
+        console.log("this is data", data);
         setMenuValues(Object.keys(data));
-        setPrices(data[Object.keys(data)[0]]);
+        //setPrices(data[Object.keys(data)[0]]);
+        setPriceData(data);
       })
       .then(setLoading(false))
       .then(console.log(`success ${type}`))
       .catch((error) => {
-        setLoading(true);
         console.log("this is the error", error);
         console.log(`${type} prices not retrieved`);
       });
   }
 
-  // //daily price variables
-  // // const [day, setDay] = useState();
-  // const [dayPrices, setDayPrices] = useState({
-  //   "1a. open (USD)": 0,
-  //   "4a. close (USD)": 0,
-  //   "2a. high (USD)": 0,
-  //   "3a. low (USD)": 0,
-  // });
-  // const [days, setDays] = useState([0]);
-  // const [dailyPriceData, setDailyPriceData] = useState({});
-
-  // //weekly price variables
-  // // const [week, setWeek] = useState();
-  // const [weekPrices, setWeekPrices] = useState({
-  //   "1a. open (USD)": 0,
-  //   "4a. close (USD)": 0,
-  //   "2a. high (USD)": 0,
-  //   "3a. low (USD)": 0,
-  // });
-  // const [weeks, setWeeks] = useState([0]);
-  // const [weeklyPriceData, setWeeklyPriceData] = useState({});
-
-  // //monthly price variables
-  // // const [month, setMonth] = useState();
-  // const [monthPrices, setMonthPrices] = useState({
-  //   "1a. open (USD)": 0,
-  //   "4a. close (USD)": 0,
-  //   "2a. high (USD)": 0,
-  //   "3a. low (USD)": 0,
-  // });
-  // const [months, setMonths] = useState([0]);
-  // const [monthlyPriceData, setMonthlyPriceData] = useState({});
-
-  // async function dataFetchDaily() {
-  //   setLoading(true);
-  //   const data = await axios
-  //     .get(endpoints.daily)
-  //     .then((response) => {
-  //       const data = response.data["Time Series (Digital Currency Daily)"];
-  //       console.log("this is data", data);
-  //       setDailyPriceData(data);
-  //       setDays(Object.keys(data));
-  //       setDayPrices(data[Object.keys(data)[0]]);
-  //     })
-  //     .then(setLoading(false))
-  //     .then(console.log("success daily"))
-  //     .catch((error) => {
-  //       setLoading(true);
-  //       console.log("this is the error", error);
-  //       console.log("daily prices not retrieved");
-  //     });
-  // }
-
-  // async function dataFetchWeekly() {
-  //   setLoading(true);
-  //   await axios
-  //     .get(endpoints.weekly)
-  //     .then((response) => {
-  //       const responseData =
-  //         response.data["Time Series (Digital Currency Weekly)"];
-  //       setWeeklyPriceData(responseData);
-  //       setWeeks(Object.keys(responseData));
-  //       setWeekPrices(responseData[Object.keys(responseData)[0]]);
-  //     })
-  //     .then(setLoading(false))
-  //     .then(console.log("success weekly", weeks))
-  //     .catch((error) => {
-  //       setLoading(true);
-  //       console.log("this is the error", error);
-  //       console.log("weekly prices not retrieved");
-  //     });
-  // }
-
-  // async function dataFetchMonthly() {
-  //   setLoading(true);
-  //   const data = await axios
-  //     .get(endpoints.monthly)
-  //     .then((response) => {
-  //       const responseData =
-  //         response.data["Time Series (Digital Currency Monthly)"];
-  //       setMonthlyPriceData(responseData);
-  //       setMonths(Object.keys(responseData));
-  //       setMonthPrices(responseData[Object.keys(responseData)[0]]);
-  //     })
-  //     .then(setLoading(false))
-  //     .then(console.log("success monthly"))
-  //     .catch((error) => {
-  //       setLoading(true);
-  //       console.log("this is the error", error);
-  //       console.log("monthly prices not retrieved");
-  //     });
-  // }
-
   //run on mount to retrieve the active market price
 
   useEffect(() => {
     async function dataFetchCurrent() {
-      setLoading(true);
       await axios
-        .get(endpoints.Current)
+        .get(
+          `query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=${currency}&apikey=${apiKey}`
+        )
         .then((response) => {
           setCurrentPrice(
             response.data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
           );
         })
-        .then(setLoading(false))
         .catch((error) => {
           console.log(error);
           console.log("current price not retrieved");
@@ -175,7 +96,7 @@ function App() {
     }
 
     dataFetchCurrent();
-  }, []);
+  }, [currency, apiKey]);
 
   if (loading)
     return (
@@ -205,7 +126,12 @@ function App() {
           onChange={(e) => updateCurrency(e.target.value)}
           defaultValue="Select Currency"
         >
-          <option id="searchType" disabled value="Select Currency">
+          <option
+            id="searchType"
+            key="currencySelect"
+            disabled
+            value="Select Currency"
+          >
             Select Currency
           </option>
           <option id="searchType" key="USD">
@@ -227,7 +153,12 @@ function App() {
           onChange={(e) => updateSearchCriteria(e.target.value)}
           defaultValue="Search Type"
         >
-          <option id="searchType" disabled value="Search Type">
+          <option
+            id="searchType"
+            key="placeholder"
+            disabled
+            value="Search Type"
+          >
             Search Type
           </option>
           <option id="searchType" key="day" value="Daily">
@@ -245,22 +176,19 @@ function App() {
           className="select"
           id="dateTimeSelect"
           disabled
-          // onChange={(e) => updateSearchCriteria(e.target.value)}
+          onChange={(e) => updatePrices(e.target.value)}
         >
-          <option id="searchType" disabled defaultValue hidden>
+          <option id="searchType" key="timePeriod" disabled defaultValue hidden>
             Time Period
           </option>
           {menuValues.map((value) => (
-            <option key={value.key}>{value}</option>
+            <option key={value}>{value}</option>
           ))}
         </select>
-        <span>{menuValues}</span>
-
-        {/* <span>Date:{days[0]}</span>
-        <span>Open:${Math.round(prices["1a. open (USD)"])}</span>
-        <span>Close:${Math.round(prices["4a. close (USD)"])}</span>
-        <span>High:${Math.round(prices["2a. high (USD)"])}</span>
-        <span>Low:${Math.round(prices["3a. low (USD)"])}</span> */}
+        <span>Open:${Math.round(prices[`1a. open (${currency})`])}</span>
+        <span>Close:${Math.round(prices[`4a. close (${currency})`])}</span>
+        <span>High:${Math.round(prices[`2a. high (${currency})`])}</span>
+        <span>Low:${Math.round(prices[`3a. low (${currency})`])}</span>
         <a
           className="App-link"
           href="https://www.alphavantage.co/"
