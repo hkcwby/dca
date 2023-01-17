@@ -5,10 +5,16 @@ import axios from "./AxiosSetup";
 function App() {
   //setting up important core values and references
   const apiKey = process.env.REACT_APP_ALPHA_VANTAGE_KEY;
-
   const [currency, setCurrency] = useState("USD");
+
+  const currencySymbols = { USD: "$", EUR: "€", CNY: "¥", JPY: "¥" };
+  const [marker, setMarker] = useState(currencySymbols.USD);
+
   function updateCurrency(selection) {
+    console.log(selection);
     setCurrency(selection);
+    setMarker(currencySymbols[selection]);
+    console.log(marker);
   }
   //the various end points used for fetching data
   const endpoints = {
@@ -118,9 +124,11 @@ function App() {
     );
   return (
     <div className="App">
-      <header className="App-header">
+      <div className="App-body">
         <p>A fun little application exploring the Alpha Vantage API</p>
-        <p>{`Current Price: $${Math.round(currentPrice)}  ${currency}`}</p>
+        <p>{`Current Price: ${marker}${Math.round(
+          currentPrice
+        )}  ${currency}`}</p>
         <select
           className="select"
           onChange={(e) => updateCurrency(e.target.value)}
@@ -185,10 +193,22 @@ function App() {
         </select>
         {!loading ? (
           <div>
-            <span>Open:${Math.round(prices[`1a. open (${currency})`])}</span>
-            <span>Close:${Math.round(prices[`4a. close (${currency})`])}</span>
-            <span>High:${Math.round(prices[`2a. high (${currency})`])}</span>
-            <span>Low:${Math.round(prices[`3a. low (${currency})`])}</span>
+            <span>
+              Open:{marker}
+              {Math.round(prices[`1a. open (${currency})`])}
+            </span>
+            <span>
+              Close:{marker}
+              {Math.round(prices[`4a. close (${currency})`])}
+            </span>
+            <span>
+              High:{marker}
+              {Math.round(prices[`2a. high (${currency})`])}
+            </span>
+            <span>
+              Low:{marker}
+              {Math.round(prices[`3a. low (${currency})`])}
+            </span>
           </div>
         ) : (
           <div> </div>
@@ -202,7 +222,7 @@ function App() {
         >
           Check out the API here
         </a>
-      </header>
+      </div>
     </div>
   );
 }
