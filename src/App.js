@@ -19,7 +19,8 @@ function App() {
   };
 
   //A boolean to toggle a loading screen whilst data is being fetched
-  const [loading, setLoading] = useState(false);
+  const [initializing, setInitializing] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   //the values to display, these need to be fetched
   const [menuValues, setMenuValues] = useState(["-"]);
@@ -55,7 +56,7 @@ function App() {
   }
 
   async function dataFetch(type) {
-    // setLoading(true);
+    setLoading(true);
     console.log("this is endpoint", endpoints[type]);
     await axios
       .get(endpoints[type])
@@ -65,7 +66,6 @@ function App() {
         const data = response.data[`Time Series (Digital Currency ${type})`];
         console.log("this is data", data);
         setMenuValues(Object.keys(data));
-        //setPrices(data[Object.keys(data)[0]]);
         setPriceData(data);
       })
       .then(setLoading(false))
@@ -89,6 +89,7 @@ function App() {
             response.data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
           );
         })
+        .then(setInitializing(false))
         .catch((error) => {
           console.log(error);
           console.log("current price not retrieved");
@@ -98,7 +99,7 @@ function App() {
     dataFetchCurrent();
   }, [currency, apiKey]);
 
-  if (loading)
+  if (initializing)
     return (
       <div className="App">
         <header className="App-header">
@@ -120,7 +121,6 @@ function App() {
       <header className="App-header">
         <p>A fun little application exploring the Alpha Vantage API</p>
         <p>{`Current Price: $${Math.round(currentPrice)}  ${currency}`}</p>
-
         <select
           className="select"
           onChange={(e) => updateCurrency(e.target.value)}
@@ -147,7 +147,6 @@ function App() {
             CNY
           </option>
         </select>
-
         <select
           className="select"
           onChange={(e) => updateSearchCriteria(e.target.value)}
@@ -171,7 +170,6 @@ function App() {
             Monthly
           </option>
         </select>
-
         <select
           className="select"
           id="dateTimeSelect"
@@ -185,10 +183,17 @@ function App() {
             <option key={value}>{value}</option>
           ))}
         </select>
-        <span>Open:${Math.round(prices[`1a. open (${currency})`])}</span>
-        <span>Close:${Math.round(prices[`4a. close (${currency})`])}</span>
-        <span>High:${Math.round(prices[`2a. high (${currency})`])}</span>
-        <span>Low:${Math.round(prices[`3a. low (${currency})`])}</span>
+        {!loading ? (
+          <div>
+            <span>Open:${Math.round(prices[`1a. open (${currency})`])}</span>
+            <span>Close:${Math.round(prices[`4a. close (${currency})`])}</span>
+            <span>High:${Math.round(prices[`2a. high (${currency})`])}</span>
+            <span>Low:${Math.round(prices[`3a. low (${currency})`])}</span>
+          </div>
+        ) : (
+          <div> </div>
+        )}
+
         <a
           className="App-link"
           href="https://www.alphavantage.co/"
