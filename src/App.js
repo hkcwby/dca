@@ -1,6 +1,7 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import axios from "./AxiosSetup";
+import PriceExplorer from "./PriceExplorer";
 
 function App() {
   //setting up important core values and references
@@ -126,7 +127,20 @@ function App() {
     <div className="App">
       <div className="App-body">
         <p>A fun little application exploring the Alpha Vantage API</p>
-        <p>{`Current Price: ${marker}${Math.round(
+        <PriceExplorer
+          updateCurrency={updateCurrency}
+          updateSearchCriteria={updateSearchCriteria}
+          updatePrices={updatePrices}
+          loading={loading}
+          prices={prices}
+          marker={marker}
+          currentPrice={currentPrice}
+          currency={currency}
+          menuValues={menuValues}
+        />
+
+        {/* <div className="Feature-tab">
+        <p>{`Reference Current Price: ${marker}${Math.round(
           currentPrice
         )}  ${currency}`}</p>
         <select
@@ -195,24 +209,33 @@ function App() {
           <div>
             <span>
               Open:{marker}
-              {Math.round(prices[`1a. open (${currency})`])}
+              {prices[`1a. open (${currency})`]
+                ? Math.round(prices[`1a. open (${currency})`])
+                : "-"}
             </span>
             <span>
               Close:{marker}
-              {Math.round(prices[`4a. close (${currency})`])}
+              {prices[`4a. close (${currency})`]
+                ? Math.round(prices[`4a. close (${currency})`])
+                : "-"}
             </span>
             <span>
               High:{marker}
-              {Math.round(prices[`2a. high (${currency})`])}
+              {prices[`2a. high (${currency})`]
+                ? Math.round(prices[`2a. high (${currency})`])
+                : "-"}
             </span>
             <span>
               Low:{marker}
-              {Math.round(prices[`3a. low (${currency})`])}
+              {prices[`3a. low (${currency})`]
+                ? Math.round(prices[`3a. low (${currency})`])
+                : "-"}
             </span>
           </div>
         ) : (
           <div> </div>
         )}
+        </div> */}
 
         <a
           className="App-link"
