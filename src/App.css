@@ -2,7 +2,7 @@
   text-align: center;
 }
 
-.App-header {
+.App-body {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -13,15 +13,19 @@
   color: white;
 }
 
-.App-body {
+.Frame {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 50vh;
+  min-width: 50vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  border-color: lightgrey;
+  border-radius: 10px;
+  border-style: solid;
 }
 
 .App-link {
@@ -35,4 +39,18 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.Price-explorer-display {
+  display: flex;
+  flex-direction: row;
+  border-color: lightgrey;
+  border-radius: 2px;
+  border-style: solid;
+}
+
+.Price-explorer-panel {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
 }

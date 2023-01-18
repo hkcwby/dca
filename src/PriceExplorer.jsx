@@ -68,31 +68,35 @@ function PriceExplorer(props) {
           ))}
         </select>
         {!props.loading ? (
-          <div>
-            <span>
-              Open:{props.marker}
-              {props.prices[`1a. open (${props.currency})`]
-                ? Math.round(props.prices[`1a. open (${props.currency})`])
-                : "-"}
-            </span>
-            <span>
-              Close:{props.marker}
-              {props.prices[`4a. close (${props.currency})`]
-                ? Math.round(props.prices[`4a. close (${props.currency})`])
-                : "-"}
-            </span>
-            <span>
-              High:{props.marker}
-              {props.prices[`2a. high (${props.currency})`]
-                ? Math.round(props.prices[`2a. high (${props.currency})`])
-                : "-"}
-            </span>
-            <span>
-              Low:{props.marker}
-              {props.prices[`3a. low (${props.currency})`]
-                ? Math.round(props.prices[`3a. low (${props.currency})`])
-                : "-"}
-            </span>
+          <div className="Price-explorer-display">
+            <div className="Price-explorer-panel">
+              <span>
+                Open:{props.marker}
+                {props.prices[`1a. open (${props.currency})`]
+                  ? Math.round(props.prices[`1a. open (${props.currency})`])
+                  : "-"}
+              </span>
+              <span>
+                High:{props.marker}
+                {props.prices[`2a. high (${props.currency})`]
+                  ? Math.round(props.prices[`2a. high (${props.currency})`])
+                  : "-"}
+              </span>
+            </div>
+            <div className="Price-explorer-panel">
+              <span>
+                Close:{props.marker}
+                {props.prices[`4a. close (${props.currency})`]
+                  ? Math.round(props.prices[`4a. close (${props.currency})`])
+                  : "-"}
+              </span>
+              <span>
+                Low:{props.marker}
+                {props.prices[`3a. low (${props.currency})`]
+                  ? Math.round(props.prices[`3a. low (${props.currency})`])
+                  : "-"}
+              </span>
+            </div>
           </div>
         ) : (
           <div> </div>

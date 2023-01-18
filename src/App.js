@@ -127,115 +127,19 @@ function App() {
     <div className="App">
       <div className="App-body">
         <p>A fun little application exploring the Alpha Vantage API</p>
-        <PriceExplorer
-          updateCurrency={updateCurrency}
-          updateSearchCriteria={updateSearchCriteria}
-          updatePrices={updatePrices}
-          loading={loading}
-          prices={prices}
-          marker={marker}
-          currentPrice={currentPrice}
-          currency={currency}
-          menuValues={menuValues}
-        />
-
-        {/* <div className="Feature-tab">
-        <p>{`Reference Current Price: ${marker}${Math.round(
-          currentPrice
-        )}  ${currency}`}</p>
-        <select
-          className="select"
-          onChange={(e) => updateCurrency(e.target.value)}
-          defaultValue="Select Currency"
-        >
-          <option
-            id="searchType"
-            key="currencySelect"
-            disabled
-            value="Select Currency"
-          >
-            Select Currency
-          </option>
-          <option id="searchType" key="USD">
-            USD
-          </option>
-          <option id="searchType" key="EUR">
-            EUR
-          </option>
-          <option id="searchType" key="JPY">
-            JPY
-          </option>
-          <option id="searchType" key="CNY">
-            CNY
-          </option>
-        </select>
-        <select
-          className="select"
-          onChange={(e) => updateSearchCriteria(e.target.value)}
-          defaultValue="Search Type"
-        >
-          <option
-            id="searchType"
-            key="placeholder"
-            disabled
-            value="Search Type"
-          >
-            Search Type
-          </option>
-          <option id="searchType" key="day" value="Daily">
-            Daily
-          </option>
-          <option id="searchType" key="week" value="Weekly">
-            Weekly
-          </option>
-          <option id="searchType" key="month" value="Monthly">
-            Monthly
-          </option>
-        </select>
-        <select
-          className="select"
-          id="dateTimeSelect"
-          disabled
-          onChange={(e) => updatePrices(e.target.value)}
-        >
-          <option id="searchType" key="timePeriod" disabled defaultValue hidden>
-            Time Period
-          </option>
-          {menuValues.map((value) => (
-            <option key={value}>{value}</option>
-          ))}
-        </select>
-        {!loading ? (
-          <div>
-            <span>
-              Open:{marker}
-              {prices[`1a. open (${currency})`]
-                ? Math.round(prices[`1a. open (${currency})`])
-                : "-"}
-            </span>
-            <span>
-              Close:{marker}
-              {prices[`4a. close (${currency})`]
-                ? Math.round(prices[`4a. close (${currency})`])
-                : "-"}
-            </span>
-            <span>
-              High:{marker}
-              {prices[`2a. high (${currency})`]
-                ? Math.round(prices[`2a. high (${currency})`])
-                : "-"}
-            </span>
-            <span>
-              Low:{marker}
-              {prices[`3a. low (${currency})`]
-                ? Math.round(prices[`3a. low (${currency})`])
-                : "-"}
-            </span>
-          </div>
-        ) : (
-          <div> </div>
-        )}
-        </div> */}
+        <div className="Frame">
+          <PriceExplorer
+            updateCurrency={updateCurrency}
+            updateSearchCriteria={updateSearchCriteria}
+            updatePrices={updatePrices}
+            loading={loading}
+            prices={prices}
+            marker={marker}
+            currentPrice={currentPrice}
+            currency={currency}
+            menuValues={menuValues}
+          />
+        </div>
 
         <a
           className="App-link"
