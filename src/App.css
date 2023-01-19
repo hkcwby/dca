@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: lightgrey;
 }
 
 .Frame {
@@ -19,10 +19,12 @@
   min-width: 50vw;
   display: flex;
   flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: lightgrey;
   border-color: lightgrey;
   border-radius: 10px;
   border-style: solid;
@@ -32,25 +34,37 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .Price-explorer-display {
   display: flex;
   flex-direction: row;
+  align-items: center;
   border-color: lightgrey;
   border-radius: 2px;
   border-style: solid;
+  min-height: 30vh;
+  min-width: 30vw;
 }
 
 .Price-explorer-panel {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 2;
+}
+
+.Menu-bar {
+  margin-top: auto;
+  display: flex;
+  flex-direction: row;
+  min-width: 50vw;
+}
+
+.Menu-option {
   flex-basis: 100%;
+  border-color: lightgrey;
+  background-color: grey;
+  border-style: solid;
+  border-width: 6px;
+  color: lightgrey;
 }

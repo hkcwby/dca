@@ -2,11 +2,22 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import axios from "./AxiosSetup";
 import PriceExplorer from "./PriceExplorer";
+import DCATool from "./DCATool";
 
 function App() {
   //setting up important core values and references
   const apiKey = process.env.REACT_APP_ALPHA_VANTAGE_KEY;
   const [currency, setCurrency] = useState("USD");
+  const [panel, setPanel] = useState("PriceExplorer");
+
+  function selectPriceExplorer() {
+    console.log("price explorer panel selected");
+    setPanel("PriceExplorer");
+  }
+
+  function selectDCATool() {
+    setPanel("DCATool");
+  }
 
   const currencySymbols = { USD: "$", EUR: "€", CNY: "¥", JPY: "¥" };
   const [marker, setMarker] = useState(currencySymbols.USD);
@@ -109,7 +120,7 @@ function App() {
   if (initializing)
     return (
       <div className="App">
-        <header className="App-header">
+        <div className="App-body">
           <p>A fun little application exploring the Alpha Vantage API</p>
           <p>LOADING . . . </p>
           <a
@@ -120,7 +131,7 @@ function App() {
           >
             Check out the API here
           </a>
-        </header>
+        </div>
       </div>
     );
   return (
@@ -128,17 +139,37 @@ function App() {
       <div className="App-body">
         <p>A fun little application exploring the Alpha Vantage API</p>
         <div className="Frame">
-          <PriceExplorer
-            updateCurrency={updateCurrency}
-            updateSearchCriteria={updateSearchCriteria}
-            updatePrices={updatePrices}
-            loading={loading}
-            prices={prices}
-            marker={marker}
-            currentPrice={currentPrice}
-            currency={currency}
-            menuValues={menuValues}
-          />
+          {panel != "PriceExplorer" ? (
+            <DCATool />
+          ) : (
+            <PriceExplorer
+              updateCurrency={updateCurrency}
+              updateSearchCriteria={updateSearchCriteria}
+              updatePrices={updatePrices}
+              loading={loading}
+              prices={prices}
+              marker={marker}
+              currentPrice={currentPrice}
+              currency={currency}
+              menuValues={menuValues}
+            />
+          )}
+          <div className="Menu-bar">
+            <div
+              className="Menu-option"
+              id="Price-explorer-tag"
+              onClick={selectPriceExplorer}
+            >
+              Price Explorer
+            </div>
+            <div
+              className="Menu-option"
+              id="DCA-tool-tag"
+              onClick={selectDCATool}
+            >
+              DCA Tool
+            </div>
+          </div>
         </div>
 
         <a

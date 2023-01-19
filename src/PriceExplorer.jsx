@@ -71,13 +71,13 @@ function PriceExplorer(props) {
           <div className="Price-explorer-display">
             <div className="Price-explorer-panel">
               <span>
-                Open:{props.marker}
+                Open: {props.marker}
                 {props.prices[`1a. open (${props.currency})`]
                   ? Math.round(props.prices[`1a. open (${props.currency})`])
                   : "-"}
               </span>
               <span>
-                High:{props.marker}
+                High: {props.marker}
                 {props.prices[`2a. high (${props.currency})`]
                   ? Math.round(props.prices[`2a. high (${props.currency})`])
                   : "-"}
@@ -85,13 +85,13 @@ function PriceExplorer(props) {
             </div>
             <div className="Price-explorer-panel">
               <span>
-                Close:{props.marker}
+                Close: {props.marker}
                 {props.prices[`4a. close (${props.currency})`]
                   ? Math.round(props.prices[`4a. close (${props.currency})`])
                   : "-"}
               </span>
               <span>
-                Low:{props.marker}
+                Low: {props.marker}
                 {props.prices[`3a. low (${props.currency})`]
                   ? Math.round(props.prices[`3a. low (${props.currency})`])
                   : "-"}
@@ -99,7 +99,16 @@ function PriceExplorer(props) {
             </div>
           </div>
         ) : (
-          <div> </div>
+          <div className="Price-explorer-display">
+            <div className="Price-explorer-panel">
+              <span>Open: -</span>
+              <span>High: -</span>
+            </div>
+            <div className="Price-explorer-panel">
+              <span>Close: -</span>
+              <span>Low: -</span>
+            </div>
+          </div>
         )}
       </div>
     </>
