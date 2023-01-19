@@ -140,7 +140,17 @@ function App() {
         <p>A fun little application exploring the Alpha Vantage API</p>
         <div className="Frame">
           {panel != "PriceExplorer" ? (
-            <DCATool />
+            <DCATool
+              updateCurrency={updateCurrency}
+              updateSearchCriteria={updateSearchCriteria}
+              updatePrices={updatePrices}
+              loading={loading}
+              prices={prices}
+              marker={marker}
+              currentPrice={currentPrice}
+              currency={currency}
+              menuValues={menuValues}
+            />
           ) : (
             <PriceExplorer
               updateCurrency={updateCurrency}

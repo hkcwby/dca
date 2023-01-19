@@ -48,9 +48,10 @@
 .Price-explorer-panel {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  flex-grow: 2;
+  flex-grow: 1;
+  min-height: 20vh;
 }
 
 .Menu-bar {
@@ -63,8 +64,7 @@
 .Menu-option {
   flex-basis: 100%;
   border-color: lightgrey;
-  background-color: grey;
   border-style: solid;
-  border-width: 6px;
+  border-width: 8px;
   color: lightgrey;
 }
