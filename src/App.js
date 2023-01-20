@@ -48,6 +48,13 @@ function App() {
     console.log("this is selection", selection);
     dataFetch(selection).then(console.log("this is menu values", menuValues));
     document.querySelector("#dateTimeSelect").disabled = false;
+    // document.querySelector("#startPointDCA").disabled = false;
+  }
+
+  function updateSearchCriteriaDCA(selection) {
+    console.log("this is selection", selection);
+    dataFetch(selection).then(console.log("this is menu values", menuValues));
+    document.querySelector("#startPointDCA").disabled = false;
   }
 
   //the current price displayed for refernce
@@ -139,10 +146,10 @@ function App() {
       <div className="App-body">
         <p>A fun little application exploring the Alpha Vantage API</p>
         <div className="Frame">
-          {panel != "PriceExplorer" ? (
+          {panel !== "PriceExplorer" ? (
             <DCATool
               updateCurrency={updateCurrency}
-              updateSearchCriteria={updateSearchCriteria}
+              updateSearchCriteriaDCA={updateSearchCriteriaDCA}
               updatePrices={updatePrices}
               loading={loading}
               prices={prices}
@@ -150,6 +157,7 @@ function App() {
               currentPrice={currentPrice}
               currency={currency}
               menuValues={menuValues}
+              priceData={priceData}
             />
           ) : (
             <PriceExplorer
