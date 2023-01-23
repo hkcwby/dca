@@ -36,13 +36,15 @@
 
 .Price-explorer-display {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
+  justify-content: space-evenly;
   border-color: lightgrey;
   border-radius: 2px;
   border-style: solid;
   min-height: 30vh;
   min-width: 30vw;
+  font-size: smaller;
 }
 
 .Price-explorer-panel {
@@ -67,4 +69,27 @@
   border-style: solid;
   border-width: 8px;
   color: lightgrey;
+}
+
+.Inputs-DCA {
+  display: flex;
+  justify-content: space-between;
+  min-width: 40vw;
+}
+
+.Summary {
+  text-decoration: underline;
+  text-decoration-thickness: 0.1em;
+}
+
+.Feature-tab {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.Calculate {
+  max-width: 10vw;
 }

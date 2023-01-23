@@ -8,6 +8,8 @@ function DCATool(props) {
   const [valueBitcoinLow, setValueBitcoinLow] = useState(0);
   const [valueBitcoinOpen, setValueBitcoinOpen] = useState(0);
   const [valueBitcoinClose, setValueBitcoinClose] = useState(0);
+  const [moneyInvested, setMoneyInvested] = useState(0);
+
   function updateAmount(value) {
     setAmount(value);
   }
@@ -70,7 +72,7 @@ function DCATool(props) {
     );
     console.log(bitcoinAverage);
     //the total invested amount
-    const moneyInvested = amount * average.length;
+    setMoneyInvested(amount * average.length);
     console.log(moneyInvested);
     //the present value of the bitcoin accumulated
     setValueBitcoinAverage(Math.floor(bitcoinAverage * props.currentPrice));
@@ -81,103 +83,117 @@ function DCATool(props) {
   }
 
   return (
-    <>
-      <div className="Feature-tab">Dollar Cost Averaging(DCA) Simulator</div>
+    <div className="Feature-tab">
+      <div className="Summary">Dollar Cost Averaging(DCA) Simulator</div>
       <div className="Inputs-DCA">
-        <label htmlFor="currencyDCA">Select Currency:</label>
-        <select
-          id="currencyDCA"
-          className="select"
-          onChange={(e) => props.updateCurrency(e.target.value)}
-          defaultValue="-"
-        >
-          <option id="searchType" key="currencySelect" disabled value="-">
-            -
-          </option>
-          <option id="searchType" key="USD">
-            USD
-          </option>
-          <option id="searchType" key="EUR">
-            EUR
-          </option>
-          <option id="searchType" key="JPY">
-            JPY
-          </option>
-          <option id="searchType" key="CNY">
-            CNY
-          </option>
-        </select>
-        <label htmlFor="amountDCA">Incremental Amount:</label>
-        <input
-          type="text"
-          id="amount"
-          name="fname"
-          onChange={(e) => updateAmount(e.target.value)}
-        />
+        <div>
+          <label htmlFor="currencyDCA">Select Currency:</label>
+          <select
+            id="currencyDCA"
+            className="select"
+            onChange={(e) => props.updateCurrency(e.target.value)}
+            defaultValue="-"
+          >
+            <option id="searchType" key="currencySelect" disabled value="-">
+              -
+            </option>
+            <option id="searchType" key="USD">
+              USD
+            </option>
+            <option id="searchType" key="EUR">
+              EUR
+            </option>
+            <option id="searchType" key="JPY">
+              JPY
+            </option>
+            <option id="searchType" key="CNY">
+              CNY
+            </option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="amountDCA">Incremental Amount:</label>
+          <input
+            type="text"
+            id="amount"
+            name="fname"
+            onChange={(e) => updateAmount(e.target.value)}
+          />
+        </div>
       </div>
-      <div>
-        <label htmlFor="basisDCA">DCA Basis:</label>
-        <select
-          id="basisDCA"
-          className="select"
-          onChange={(e) => props.updateSearchCriteriaDCA(e.target.value)}
-          defaultValue="-"
-        >
-          <option id="searchType" key="placeholder" disabled value="-">
-            -
-          </option>
-          <option id="searchType" key="day" value="Daily">
-            Daily
-          </option>
-          <option id="searchType" key="week" value="Weekly">
-            Weekly
-          </option>
-          <option id="searchType" key="month" value="Monthly">
-            Monthly
-          </option>
-        </select>
-        <label htmlFor="startPointDCA">Start Date:</label>
-        <select
-          className="select"
-          id="startPointDCA"
-          disabled
-          onChange={(e) => setStartDate(e.target.value)}
-        >
-          <option key="timePeriod" disabled defaultValue hidden>
-            Start Point
-          </option>
-          {props.menuValues.map((value) => (
-            <option key={value}>{value}</option>
-          ))}
-        </select>
+      <div className="Inputs-DCA">
+        <div>
+          <label htmlFor="basisDCA">DCA Basis:</label>
+          <select
+            id="basisDCA"
+            className="select"
+            onChange={(e) => props.updateSearchCriteriaDCA(e.target.value)}
+            defaultValue="-"
+          >
+            <option id="searchType" key="placeholder" disabled value="-">
+              -
+            </option>
+            <option id="searchType" key="day" value="Daily">
+              Daily
+            </option>
+            <option id="searchType" key="week" value="Weekly">
+              Weekly
+            </option>
+            <option id="searchType" key="month" value="Monthly">
+              Monthly
+            </option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="startPointDCA">Start Date:</label>
+          <select
+            className="select"
+            id="startPointDCA"
+            disabled
+            onChange={(e) => setStartDate(e.target.value)}
+          >
+            <option key="timePeriod" disabled defaultValue hidden>
+              Start Point
+            </option>
+            {props.menuValues.map((value) => (
+              <option key={value}>{value}</option>
+            ))}
+          </select>
+        </div>
       </div>
-      <button type="button" value="Calculate" onClick={calculateDCA}>
+      <button
+        className="Calculate"
+        type="button"
+        value="Calculate"
+        onClick={calculateDCA}
+      >
         Calculate
       </button>
 
       <div className="Price-explorer-display">
-        <div className="Price-explorer-panel">
-          <div>
-            Open: {props.marker}
-            {valueBitcoinOpen ? valueBitcoinOpen : "-"}
-          </div>
-          <div>
-            High: {props.marker}
-            {valueBitcoinHigh ? valueBitcoinHigh : "-"}
-          </div>
+        <div>
+          Funds Invested: {props.marker}
+          {moneyInvested ? moneyInvested : "-"}
         </div>
-        <div className="Price-explorer-panel">
-          <div>
-            Close: {props.marker}
-            {valueBitcoinClose ? valueBitcoinClose : "-"}
-          </div>
-          <div>
-            Low: {props.marker}
-            {valueBitcoinLow ? valueBitcoinLow : "-"}
-          </div>
+        <div className="Summary">Summary</div>
+        <div>
+          Bought at the low of each period: {props.marker}
+          {valueBitcoinLow ? valueBitcoinLow : "-"}
+        </div>
+        <div>
+          Bought at the high point of each period: {props.marker}
+          {valueBitcoinHigh ? valueBitcoinHigh : "-"}
+        </div>
+        <div>
+          Bought at opening of each period: {props.marker}
+          {valueBitcoinOpen ? valueBitcoinOpen : "-"}
+        </div>
+        <div>
+          Bought at the close of each period: {props.marker}
+          {valueBitcoinClose ? valueBitcoinClose : "-"}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
