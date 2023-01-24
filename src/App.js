@@ -3,10 +3,16 @@ import { useState, useEffect } from "react";
 import axios from "./AxiosSetup";
 import PriceExplorer from "./PriceExplorer";
 import DCATool from "./DCATool";
+import Settings from "./Settings";
 
 function App() {
   //setting up important core values and references
   const apiKey = process.env.REACT_APP_ALPHA_VANTAGE_KEY;
+  const [userAPIKey, setUserAPIKEY] = useState("");
+  function updateAPIKEY(value) {
+    console.log(value);
+    setUserAPIKEY(value);
+  }
   const [currency, setCurrency] = useState("USD");
   const [panel, setPanel] = useState("PriceExplorer");
 
@@ -17,6 +23,10 @@ function App() {
 
   function selectDCATool() {
     setPanel("DCATool");
+  }
+
+  function selectSettings() {
+    setPanel("Settings");
   }
 
   const currencySymbols = { USD: "$", EUR: "€", CNY: "¥", JPY: "¥" };
@@ -30,10 +40,18 @@ function App() {
   }
   //the various end points used for fetching data
   const endpoints = {
-    Current: `query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=${currency}&apikey=${apiKey}`,
-    Daily: `query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=${currency}&apikey=${apiKey}&outputsize=compact`,
-    Weekly: `query?function=DIGITAL_CURRENCY_WEEKLY&symbol=BTC&market=${currency}&apikey=${apiKey}&outputsize=compact`,
-    Monthly: `query?function=DIGITAL_CURRENCY_MONTHLY&symbol=BTC&market=${currency}&apikey=${apiKey}&outputsize=compact`,
+    Current: `query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=${currency}&apikey=${
+      userAPIKey ? userAPIKey : apiKey
+    }`,
+    Daily: `query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=${currency}&apikey=${
+      userAPIKey ? userAPIKey : apiKey
+    }&outputsize=compact`,
+    Weekly: `query?function=DIGITAL_CURRENCY_WEEKLY&symbol=BTC&market=${currency}&apikey=${
+      userAPIKey ? userAPIKey : apiKey
+    }&outputsize=compact`,
+    Monthly: `query?function=DIGITAL_CURRENCY_MONTHLY&symbol=BTC&market=${currency}&apikey=${
+      userAPIKey ? userAPIKey : apiKey
+    }&outputsize=compact`,
   };
 
   //A boolean to toggle a loading screen whilst data is being fetched
@@ -146,7 +164,7 @@ function App() {
       <div className="App-body">
         <p>A fun little application exploring the Alpha Vantage API</p>
         <div className="Frame">
-          {panel !== "PriceExplorer" ? (
+          {panel === "DCATool" ? (
             <DCATool
               updateCurrency={updateCurrency}
               updateSearchCriteriaDCA={updateSearchCriteriaDCA}
@@ -159,7 +177,7 @@ function App() {
               menuValues={menuValues}
               priceData={priceData}
             />
-          ) : (
+          ) : panel === "PriceExplorer" ? (
             <PriceExplorer
               updateCurrency={updateCurrency}
               updateSearchCriteria={updateSearchCriteria}
@@ -171,6 +189,8 @@ function App() {
               currency={currency}
               menuValues={menuValues}
             />
+          ) : (
+            <Settings updateAPIKEY={updateAPIKEY} />
           )}
           <div className="Menu-bar">
             <div
@@ -186,6 +206,13 @@ function App() {
               onClick={selectDCATool}
             >
               DCA Tool
+            </div>
+            <div
+              className="Menu-option"
+              id="Settings-tag"
+              onClick={selectSettings}
+            >
+              Settings
             </div>
           </div>
         </div>

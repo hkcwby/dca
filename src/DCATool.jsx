@@ -170,7 +170,7 @@ function DCATool(props) {
         Calculate
       </button>
 
-      <div className="Price-explorer-display">
+      <div className="DCA-display">
         <div>
           Funds Invested: {props.marker}
           {moneyInvested ? moneyInvested : "-"}
@@ -183,6 +183,10 @@ function DCATool(props) {
         <div>
           Bought at the high point of each period: {props.marker}
           {valueBitcoinHigh ? valueBitcoinHigh : "-"}
+        </div>
+        <div>
+          Bought at the average point of each period: {props.marker}
+          {valueBitcoinAverage ? valueBitcoinAverage : "-"}
         </div>
         <div>
           Bought at opening of each period: {props.marker}
