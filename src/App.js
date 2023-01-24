@@ -207,7 +207,7 @@ function App() {
           )}
           <div className="Menu-bar">
             <div
-              className="Menu-option"
+              className="Menu-option Menu-selected"
               id="Price-explorer-tag"
               onClick={selectPriceExplorer}
             >
