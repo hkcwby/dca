@@ -6,16 +6,17 @@ import DCATool from "./DCATool";
 import Settings from "./Settings";
 
 function App() {
-  //setting up important core values and references
+  //setting up reference API Key
   const apiKey = process.env.REACT_APP_ALPHA_VANTAGE_KEY;
+  //variable and a function to allow users to insert their own API Key on the settings tab
   const [userAPIKey, setUserAPIKEY] = useState("");
   function updateAPIKEY(value) {
-    console.log(value);
     setUserAPIKEY(value);
   }
-  const [currency, setCurrency] = useState("USD");
-  const [panel, setPanel] = useState("PriceExplorer");
 
+  //a variable to track the desired view to be displayed
+  const [panel, setPanel] = useState("PriceExplorer");
+  //functions to reassign the view to the appropriate selection and highlight the appropriate tab in the selection menu
   function selectPriceExplorer() {
     setPanel("PriceExplorer");
     document
@@ -41,7 +42,8 @@ function App() {
       .forEach((item) => item.classList.remove("Menu-selected"));
     document.querySelector("#Settings-tag").classList.add("Menu-selected");
   }
-
+  //assign the currency to be used in the API call and the appropriate symbols to be used in the display
+  const [currency, setCurrency] = useState("USD");
   const currencySymbols = { USD: "$", EUR: "€", CNY: "¥", JPY: "¥" };
   const [marker, setMarker] = useState(currencySymbols.USD);
 
@@ -76,33 +78,29 @@ function App() {
 
   // function to update the data type and unlock the date time option
   function updateSearchCriteria(selection) {
-    console.log("this is selection", selection);
-    dataFetch(selection).then(console.log("this is menu values", menuValues));
+    dataFetch(selection);
     document.querySelector("#dateTimeSelect").disabled = false;
-    // document.querySelector("#startPointDCA").disabled = false;
   }
 
   function updateSearchCriteriaDCA(selection) {
-    console.log("this is selection", selection);
-    dataFetch(selection).then(console.log("this is menu values", menuValues));
+    dataFetch(selection);
     document.querySelector("#startPointDCA").disabled = false;
   }
 
-  //the current price displayed for refernce
+  //the current price displayed for reference for the explorer
   const [currentPrice, setCurrentPrice] = useState(0);
+  //raw price data from fetch call
   const [priceData, setPriceData] = useState([]);
+  //the particular price data for the explorer
   const [prices, setPrices] = useState({
     "1a. open (USD)": 0,
     "4a. close (USD)": 0,
     "2a. high (USD)": 0,
     "3a. low (USD)": 0,
   });
-
+  //function takes raw price data and the selected date and populates price variables
   function updatePrices(selection) {
-    console.log("this is price data", priceData);
-    console.log("this is the selected date", selection);
     const data = priceData[selection];
-    console.log(data);
     setPrices({
       [`1a. open (${currency})`]: data[[`1a. open (${currency})`]],
       [`4a. close (${currency})`]: data[[`4a. close (${currency})`]],
@@ -110,17 +108,13 @@ function App() {
       [`3a. low (${currency})`]: data[[`3a. low (${currency})`]],
     });
   }
-
+  //function that gathers raw data from the API
   async function dataFetch(type) {
     setLoading(true);
-    console.log("this is endpoint", endpoints[type]);
     await axios
       .get(endpoints[type])
       .then((response) => {
-        console.log("this is response", response);
-        console.log(`Time Series (Digital Currency ${type})`);
         const data = response.data[`Time Series (Digital Currency ${type})`];
-        console.log("this is data", data);
         setMenuValues(Object.keys(data));
         setPriceData(data);
       })
@@ -133,7 +127,6 @@ function App() {
   }
 
   //run on mount to retrieve the active market price
-
   useEffect(() => {
     async function dataFetchCurrent() {
       await axios
