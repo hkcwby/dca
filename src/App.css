@@ -105,3 +105,8 @@
 .Calculate {
   max-width: 10vw;
 }
+
+.Menu-selected {
+  background-color: lightgray;
+  color: #282c34;
+}

@@ -17,16 +17,29 @@ function App() {
   const [panel, setPanel] = useState("PriceExplorer");
 
   function selectPriceExplorer() {
-    console.log("price explorer panel selected");
     setPanel("PriceExplorer");
+    document
+      .querySelectorAll(".Menu-option")
+      .forEach((item) => item.classList.remove("Menu-selected"));
+    document
+      .querySelector("#Price-explorer-tag")
+      .classList.add("Menu-selected");
   }
 
   function selectDCATool() {
     setPanel("DCATool");
+    document
+      .querySelectorAll(".Menu-option")
+      .forEach((item) => item.classList.remove("Menu-selected"));
+    document.querySelector("#DCA-tool-tag").classList.add("Menu-selected");
   }
 
   function selectSettings() {
     setPanel("Settings");
+    document
+      .querySelectorAll(".Menu-option")
+      .forEach((item) => item.classList.remove("Menu-selected"));
+    document.querySelector("#Settings-tag").classList.add("Menu-selected");
   }
 
   const currencySymbols = { USD: "$", EUR: "€", CNY: "¥", JPY: "¥" };
