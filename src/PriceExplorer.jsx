@@ -60,7 +60,7 @@ function PriceExplorer(props) {
           disabled
           onChange={(e) => props.updatePrices(e.target.value)}
         >
-          <option id="searchType" key="timePeriod" disabled defaultValue hidden>
+          <option id="searchType" key="timePeriod" defaultValue hidden>
             Time Period
           </option>
           {props.menuValues.map((value) => (

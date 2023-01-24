@@ -14,34 +14,6 @@ function App() {
     setUserAPIKEY(value);
   }
 
-  //a variable to track the desired view to be displayed
-  const [panel, setPanel] = useState("PriceExplorer");
-  //functions to reassign the view to the appropriate selection and highlight the appropriate tab in the selection menu
-  function selectPriceExplorer() {
-    setPanel("PriceExplorer");
-    document
-      .querySelectorAll(".Menu-option")
-      .forEach((item) => item.classList.remove("Menu-selected"));
-    document
-      .querySelector("#Price-explorer-tag")
-      .classList.add("Menu-selected");
-  }
-
-  function selectDCATool() {
-    setPanel("DCATool");
-    document
-      .querySelectorAll(".Menu-option")
-      .forEach((item) => item.classList.remove("Menu-selected"));
-    document.querySelector("#DCA-tool-tag").classList.add("Menu-selected");
-  }
-
-  function selectSettings() {
-    setPanel("Settings");
-    document
-      .querySelectorAll(".Menu-option")
-      .forEach((item) => item.classList.remove("Menu-selected"));
-    document.querySelector("#Settings-tag").classList.add("Menu-selected");
-  }
   //assign the currency to be used in the API call and the appropriate symbols to be used in the display
   const [currency, setCurrency] = useState("USD");
   const currencySymbols = { USD: "$", EUR: "€", CNY: "¥", JPY: "¥" };
@@ -108,6 +80,42 @@ function App() {
       [`3a. low (${currency})`]: data[[`3a. low (${currency})`]],
     });
   }
+
+  //a variable to track the desired view to be displayed
+  const [panel, setPanel] = useState("PriceExplorer");
+  //functions to reassign the view to the appropriate selection and highlight the appropriate tab in the selection menu
+  function selectPriceExplorer() {
+    setPrices({
+      "1a. open (USD)": 0,
+      "4a. close (USD)": 0,
+      "2a. high (USD)": 0,
+      "3a. low (USD)": 0,
+    });
+    setPanel("PriceExplorer");
+    document
+      .querySelectorAll(".Menu-option")
+      .forEach((item) => item.classList.remove("Menu-selected"));
+    document
+      .querySelector("#Price-explorer-tag")
+      .classList.add("Menu-selected");
+  }
+
+  function selectDCATool() {
+    setPanel("DCATool");
+    document
+      .querySelectorAll(".Menu-option")
+      .forEach((item) => item.classList.remove("Menu-selected"));
+    document.querySelector("#DCA-tool-tag").classList.add("Menu-selected");
+  }
+
+  function selectSettings() {
+    setPanel("Settings");
+    document
+      .querySelectorAll(".Menu-option")
+      .forEach((item) => item.classList.remove("Menu-selected"));
+    document.querySelector("#Settings-tag").classList.add("Menu-selected");
+  }
+
   //function that gathers raw data from the API
   async function dataFetch(type) {
     setLoading(true);
@@ -146,7 +154,7 @@ function App() {
     }
 
     dataFetchCurrent();
-  }, [currency, apiKey]);
+  }, [currency]);
 
   if (initializing)
     return (
@@ -175,11 +183,10 @@ function App() {
               updateCurrency={updateCurrency}
               updateSearchCriteriaDCA={updateSearchCriteriaDCA}
               updatePrices={updatePrices}
-              loading={loading}
-              prices={prices}
+              // prices={prices}
               marker={marker}
               currentPrice={currentPrice}
-              currency={currency}
+              //currency={currency}
               menuValues={menuValues}
               priceData={priceData}
             />

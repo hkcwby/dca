@@ -152,7 +152,7 @@ function DCATool(props) {
             disabled
             onChange={(e) => setStartDate(e.target.value)}
           >
-            <option key="timePeriod" disabled defaultValue hidden>
+            <option key="timePeriod" defaultValue hidden>
               Start Point
             </option>
             {props.menuValues.map((value) => (
