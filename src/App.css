@@ -83,12 +83,6 @@
   color: lightgrey;
 }
 
-.Inputs-DCA {
-  display: flex;
-  justify-content: space-between;
-  min-width: 40vw;
-}
-
 .Summary {
   text-decoration: underline;
   text-decoration-thickness: 0.1em;
@@ -109,4 +103,13 @@
 .Menu-selected {
   background-color: lightgray;
   color: #282c34;
+}
+
+#amount {
+  width: 12vw;
+}
+
+.Failed-validation {
+  color: red;
+  font-size: x-small;
 }
