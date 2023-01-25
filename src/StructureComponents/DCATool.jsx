@@ -21,7 +21,6 @@ function DCATool(props) {
     const openPrices = dataSelection.map(
       (date) => props.priceData[date][`1a. open (USD)`]
     );
-    console.log(openPrices);
 
     const bitcoinOpen = openPrices.reduce(
       (stored, value) => stored + amount / value,
@@ -32,7 +31,6 @@ function DCATool(props) {
     const highPrices = dataSelection.map(
       (date) => props.priceData[date][`2a. high (USD)`]
     );
-    console.log(highPrices);
 
     const bitcoinHigh = highPrices.reduce(
       (stored, value) => stored + amount / value,
@@ -43,7 +41,6 @@ function DCATool(props) {
     const lowPrices = dataSelection.map(
       (date) => props.priceData[date][`3a. low (USD)`]
     );
-    console.log(lowPrices);
 
     const bitcoinLow = lowPrices.reduce(
       (stored, value) => stored + amount / value,
@@ -54,7 +51,6 @@ function DCATool(props) {
     const closePrices = dataSelection.map(
       (date) => props.priceData[date][`4a. close (USD)`]
     );
-    console.log(closePrices);
 
     const bitcoinClose = closePrices.reduce(
       (stored, value) => stored + amount / value,
@@ -70,10 +66,8 @@ function DCATool(props) {
       (stored, value) => stored + amount / value,
       0
     );
-    console.log(bitcoinAverage);
     //the total invested amount
     setMoneyInvested(amount * average.length);
-    console.log(moneyInvested);
     //the present value of the bitcoin accumulated
     setValueBitcoinAverage(Math.floor(bitcoinAverage * props.currentPrice));
     setValueBitcoinHigh(Math.floor(bitcoinHigh * props.currentPrice));

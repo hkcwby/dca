@@ -1,9 +1,9 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import axios from "./AxiosSetup";
-import PriceExplorer from "./PriceExplorer";
-import DCATool from "./DCATool";
-import Settings from "./Settings";
+import PriceExplorer from "./StructureComponents/PriceExplorer";
+import DCATool from "./StructureComponents/DCATool";
+import Settings from "./StructureComponents/Settings";
 
 function App() {
   //setting up reference API Key
@@ -32,13 +32,13 @@ function App() {
     }`,
     Daily: `query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=${currency}&apikey=${
       userAPIKey ? userAPIKey : apiKey
-    }&outputsize=compact`,
+    }`,
     Weekly: `query?function=DIGITAL_CURRENCY_WEEKLY&symbol=BTC&market=${currency}&apikey=${
       userAPIKey ? userAPIKey : apiKey
-    }&outputsize=compact`,
+    }`,
     Monthly: `query?function=DIGITAL_CURRENCY_MONTHLY&symbol=BTC&market=${currency}&apikey=${
       userAPIKey ? userAPIKey : apiKey
-    }&outputsize=compact`,
+    }`,
   };
 
   //A boolean to toggle a loading screen whilst data is being fetched
@@ -123,7 +123,7 @@ function App() {
       .get(endpoints[type])
       .then((response) => {
         const data = response.data[`Time Series (Digital Currency ${type})`];
-        setMenuValues(Object.keys(data));
+        setMenuValues(Object.keys(data).slice(1));
         setPriceData(data);
       })
       .then(setLoading(false))
@@ -183,10 +183,8 @@ function App() {
               updateCurrency={updateCurrency}
               updateSearchCriteriaDCA={updateSearchCriteriaDCA}
               updatePrices={updatePrices}
-              // prices={prices}
               marker={marker}
               currentPrice={currentPrice}
-              //currency={currency}
               menuValues={menuValues}
               priceData={priceData}
             />
