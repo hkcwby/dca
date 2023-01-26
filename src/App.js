@@ -4,6 +4,7 @@ import axios from "./AxiosSetup";
 import PriceExplorer from "./StructureComponents/PriceExplorer";
 import DCATool from "./StructureComponents/DCATool";
 import Settings from "./StructureComponents/Settings";
+import DayAnalysis from "./StructureComponents/DayAnalysis";
 
 function App() {
   //setting up reference API Key
@@ -108,6 +109,14 @@ function App() {
     document.querySelector("#DCA-tool-tag").classList.add("Menu-selected");
   }
 
+  function selectDayAnalysis() {
+    setPanel("DayAnalysis");
+    document
+      .querySelectorAll(".Menu-option")
+      .forEach((item) => item.classList.remove("Menu-selected"));
+    document.querySelector("#Day-analysis-tag").classList.add("Menu-selected");
+  }
+
   function selectSettings() {
     setPanel("Settings");
     document
@@ -200,8 +209,10 @@ function App() {
               currency={currency}
               menuValues={menuValues}
             />
-          ) : (
+          ) : panel === "Settings" ? (
             <Settings updateAPIKEY={updateAPIKEY} />
+          ) : (
+            <DayAnalysis apiKey={apiKey} userAPIKey={userAPIKey} />
           )}
           <div className="Menu-bar">
             <div
@@ -217,6 +228,13 @@ function App() {
               onClick={selectDCATool}
             >
               DCA Tool
+            </div>
+            <div
+              className="Menu-option"
+              id="Day-analysis-tag"
+              onClick={selectDayAnalysis}
+            >
+              Day Analysis
             </div>
             <div
               className="Menu-option"
