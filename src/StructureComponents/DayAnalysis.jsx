@@ -2,9 +2,16 @@ import { useState, useEffect } from "react";
 import axios from "../AxiosSetup";
 
 function DayAnalysis(props) {
-  const [dayData, setDayData] = useState({});
-  const [days, setDays] = useState([]);
-  const [value, setValue] = useState("");
+  const [dataset, setDataset] = useState("");
+  const weekDays = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
 
   useEffect(() => {
     async function dataFetchCurrent() {
@@ -20,10 +27,26 @@ function DayAnalysis(props) {
             response.data[`Time Series (Digital Currency Daily)`]
           );
           const data = response.data[`Time Series (Digital Currency Daily)`];
-          setDays(Object.keys(data).map((item) => new Date(item).getDay()));
-          setValue(Object.keys(data)[0]);
-          setValue(new Date(Object.keys(data)[0]).getDay());
-          setDayData(data);
+          const dates = Object.keys(data);
+          const modified = dates.map((date) => {
+            const output = data[date];
+            output.weekday = weekDays[new Date(date).getDay()];
+            return output;
+          });
+          console.log(modified);
+
+          const frequency = [0, 0, 0, 0, 0, 0, 0];
+          const daysOfTheWeek = [];
+          for (let i = 0; i < 7; i++) {
+            daysOfTheWeek.push(modified[i]["weekday"]);
+          }
+          console.log(daysOfTheWeek);
+
+          // const counter = 0;
+          // lowest = 0;
+          // currentLowestDay = "";
+
+          for (let j = 0; j < modified.length; j++) {}
         })
         .catch((error) => {
           console.log(error);
@@ -39,8 +62,8 @@ function DayAnalysis(props) {
       <div className="Feature-tab">
         <p>data exploration of day of the week prices</p>
         <p>
-          {value}
-          {days}
+          {/* {value} */}
+          {/* {days} */}
         </p>
       </div>
     </>
