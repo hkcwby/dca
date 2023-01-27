@@ -125,16 +125,16 @@ function DayAnalysis(props) {
         <table>
           <tr>
             <th> </th>
-            <th>Lowest</th>
+            <th>Price Low</th>
             <th> </th>
-            <th>Highest</th>
+            <th>Price High</th>
           </tr>
           <tr>
             <th>Day</th>
-            <th>Low</th>
-            <th>High</th>
-            <th>Low</th>
-            <th>/ High</th>
+            <th>Lowest</th>
+            <th>Highest</th>
+            <th>Lowest</th>
+            <th>Highest</th>
           </tr>
           <tr>
             <td>Monday</td>
