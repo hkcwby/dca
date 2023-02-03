@@ -20,18 +20,18 @@ function DayAnalysis(props) {
     async function dataFetchCurrent() {
       await axios
         .get(
-          `query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=USD&apikey=${
-            props.userAPIKey ? props.userAPIKey : props.apiKey
-          }`
+          `query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=${
+            props.currency
+          }&apikey=${props.userAPIKey ? props.userAPIKey : props.apiKey}`
         )
         .then((response) => {
-          console.log(
-            "this is data",
-            response.data[`Time Series (Digital Currency Daily)`]
-          );
+          //useful console.log statement for checking if API call is functioning correct
+          // console.log(
+          //   "this is data",
+          //   response.data[`Time Series (Digital Currency Daily)`]
+          // );
           //acquire the price data from the API response
           const data = response.data[`Time Series (Digital Currency Daily)`];
-          console.log(data);
           //create a new format of the data with the appropriate day of the week appended
           const dates = Object.keys(data);
           const modified = dates.map((date) => {
@@ -55,10 +55,10 @@ function DayAnalysis(props) {
             const temp = modified.slice(j, j + 7);
 
             const modTempHigh = temp.map((item) =>
-              Math.floor(item["2a. high (USD)"])
+              Math.floor(item[`2a. high (${props.currency})`])
             );
             const modTempLow = temp.map((item) =>
-              Math.floor(item["3a. low (USD)"])
+              Math.floor(item[`3a. low (${props.currency})`])
             );
             //determine the max and min price day each week and the index
             const maxHigh = Math.max(...modTempHigh);
@@ -69,16 +69,12 @@ function DayAnalysis(props) {
             const minIndexHigh = modTempHigh.indexOf(minHigh);
             const maxIndexLow = modTempLow.indexOf(maxLow);
             const minIndexLow = modTempLow.indexOf(minLow);
-            console.log(modTempLow);
-            console.log(maxLow);
-            console.log(maxIndexLow);
             frequencyMaxHigh[maxIndexHigh] += 1;
             frequencyMinHigh[minIndexHigh] += 1;
             frequencyMaxLow[maxIndexLow] += 1;
             frequencyMinLow[minIndexLow] += 1;
           }
           const total = frequencyMaxHigh.reduce((a, b) => a + b, 0);
-          console.log("this is total", total);
 
           const percentageMaxHigh = frequencyMaxHigh.map((item) =>
             ((item / total) * 100).toFixed(2)
@@ -102,8 +98,6 @@ function DayAnalysis(props) {
             combinedOutputLowMin[daysOfTheWeek[k]] = percentageMinLow[k];
             combinedOutputLowMax[daysOfTheWeek[k]] = percentageMaxLow[k];
           }
-          console.log(combinedOutputHighMin["Monday"]);
-          console.log(combinedOutputLowMin);
           setLowMin(combinedOutputLowMin);
           setLowMax(combinedOutputLowMax);
           setHighMin(combinedOutputHighMin);
@@ -123,68 +117,70 @@ function DayAnalysis(props) {
       <div className="Feature-tab">
         <p>data exploration of day of the week prices</p>
         <table>
-          <tr>
-            <th> </th>
-            <th>Price Low</th>
-            <th> </th>
-            <th>Price High</th>
-          </tr>
-          <tr>
-            <th>Day</th>
-            <th>Lowest</th>
-            <th>Highest</th>
-            <th>Lowest</th>
-            <th>Highest</th>
-          </tr>
-          <tr>
-            <td>Monday</td>
-            <td>%{lowMin.Monday}</td>
-            <td>%{lowMax.Monday}</td>
-            <td>%{highMin.Monday}</td>
-            <td>%{highMax.Monday}</td>
-          </tr>
-          <tr>
-            <td>Tuesday</td>
-            <td>%{lowMin.Tuesday}</td>
-            <td>%{lowMax.Tuesday}</td>
-            <td>%{highMin.Tuesday}</td>
-            <td>%{highMax.Tuesday}</td>
-          </tr>
-          <tr>
-            <td>Wednesday</td>
-            <td>%{lowMin.Wednesday}</td>
-            <td>%{lowMax.Wednesday}</td>
-            <td>%{highMin.Wednesday}</td>
-            <td>%{highMax.Wednesday}</td>
-          </tr>
-          <tr>
-            <td>Thursday</td>
-            <td>%{lowMin.Thursday}</td>
-            <td>%{lowMax.Thursday}</td>
-            <td>%{highMin.Thursday}</td>
-            <td>%{highMax.Thursday}</td>
-          </tr>
-          <tr>
-            <td>Friday</td>
-            <td>%{lowMin.Friday}</td>
-            <td>%{lowMax.Friday}</td>
-            <td>%{highMin.Friday}</td>
-            <td>%{highMax.Friday}</td>
-          </tr>
-          <tr>
-            <td>Saturday</td>
-            <td>%{lowMin.Saturday}</td>
-            <td>%{lowMax.Saturday}</td>
-            <td>%{highMin.Saturday}</td>
-            <td>%{highMax.Saturday}</td>
-          </tr>
-          <tr>
-            <td>Sunday</td>
-            <td>%{lowMin.Sunday}</td>
-            <td>%{lowMax.Sunday}</td>
-            <td>%{highMin.Sunday}</td>
-            <td>%{highMax.Sunday}</td>
-          </tr>
+          <tbody>
+            <tr>
+              <th> </th>
+              <th>Price Low</th>
+              <th> </th>
+              <th>Price High</th>
+            </tr>
+            <tr>
+              <th>Day</th>
+              <th>Lowest</th>
+              <th>Highest</th>
+              <th>Lowest</th>
+              <th>Highest</th>
+            </tr>
+            <tr>
+              <td>Monday</td>
+              <td>%{lowMin.Monday}</td>
+              <td>%{lowMax.Monday}</td>
+              <td>%{highMin.Monday}</td>
+              <td>%{highMax.Monday}</td>
+            </tr>
+            <tr>
+              <td>Tuesday</td>
+              <td>%{lowMin.Tuesday}</td>
+              <td>%{lowMax.Tuesday}</td>
+              <td>%{highMin.Tuesday}</td>
+              <td>%{highMax.Tuesday}</td>
+            </tr>
+            <tr>
+              <td>Wednesday</td>
+              <td>%{lowMin.Wednesday}</td>
+              <td>%{lowMax.Wednesday}</td>
+              <td>%{highMin.Wednesday}</td>
+              <td>%{highMax.Wednesday}</td>
+            </tr>
+            <tr>
+              <td>Thursday</td>
+              <td>%{lowMin.Thursday}</td>
+              <td>%{lowMax.Thursday}</td>
+              <td>%{highMin.Thursday}</td>
+              <td>%{highMax.Thursday}</td>
+            </tr>
+            <tr>
+              <td>Friday</td>
+              <td>%{lowMin.Friday}</td>
+              <td>%{lowMax.Friday}</td>
+              <td>%{highMin.Friday}</td>
+              <td>%{highMax.Friday}</td>
+            </tr>
+            <tr>
+              <td>Saturday</td>
+              <td>%{lowMin.Saturday}</td>
+              <td>%{lowMax.Saturday}</td>
+              <td>%{highMin.Saturday}</td>
+              <td>%{highMax.Saturday}</td>
+            </tr>
+            <tr>
+              <td>Sunday</td>
+              <td>%{lowMin.Sunday}</td>
+              <td>%{lowMax.Sunday}</td>
+              <td>%{highMin.Sunday}</td>
+              <td>%{highMax.Sunday}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </>

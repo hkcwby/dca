@@ -132,6 +132,7 @@ function App() {
       .get(endpoints[type])
       .then((response) => {
         const data = response.data[`Time Series (Digital Currency ${type})`];
+        console.log(endpoints[type]);
         setMenuValues(Object.keys(data).slice(1));
         setPriceData(data);
       })
@@ -212,7 +213,11 @@ function App() {
           ) : panel === "Settings" ? (
             <Settings updateAPIKEY={updateAPIKEY} />
           ) : (
-            <DayAnalysis apiKey={apiKey} userAPIKey={userAPIKey} />
+            <DayAnalysis
+              apiKey={apiKey}
+              userAPIKey={userAPIKey}
+              currency={currency}
+            />
           )}
           <div className="Menu-bar">
             <div
