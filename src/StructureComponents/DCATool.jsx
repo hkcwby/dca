@@ -13,24 +13,7 @@ function DCATool(props) {
   const [moneyInvested, setMoneyInvested] = useState(0);
   const [valid, setValid] = useState(true);
 
-  const [chartData, setChartData] = useState({
-    labels: Data.map((data) => data.year),
-    datasets: [
-      {
-        label: "Users Gained ",
-        data: Data.map((data) => data.userGain),
-        backgroundColor: [
-          "rgba(75,192,192,1)",
-          "#ecf0f1",
-          "#50AF95",
-          "#f3ba2f",
-          "#2a71d0",
-        ],
-        borderColor: "black",
-        borderWidth: 2,
-      },
-    ],
-  });
+  const [chartData, setChartData] = useState();
 
   function updateAmount(value) {
     isNaN(value) ? setValid(false) : setValid(true);
@@ -42,7 +25,7 @@ function DCATool(props) {
 
     //gather all the opening prices
     const openPrices = dataSelection.map(
-      (date) => props.priceData[date][`1a. open (USD)`]
+      (date) => props.priceData[date][`1a. open (${props.currency})`]
     );
 
     const bitcoinOpen = openPrices.reduce(
@@ -52,7 +35,7 @@ function DCATool(props) {
 
     //gather all the high prices
     const highPrices = dataSelection.map(
-      (date) => props.priceData[date][`2a. high (USD)`]
+      (date) => props.priceData[date][`2a. high (${props.currency})`]
     );
 
     const bitcoinHigh = highPrices.reduce(
@@ -62,7 +45,7 @@ function DCATool(props) {
 
     //gather all the low prices
     const lowPrices = dataSelection.map(
-      (date) => props.priceData[date][`3a. low (USD)`]
+      (date) => props.priceData[date][`3a. low (${props.currency})`]
     );
 
     const bitcoinLow = lowPrices.reduce(
@@ -72,7 +55,7 @@ function DCATool(props) {
 
     //gather all the low closing
     const closePrices = dataSelection.map(
-      (date) => props.priceData[date][`4a. close (USD)`]
+      (date) => props.priceData[date][`4a. close (${props.currency})`]
     );
 
     const bitcoinClose = closePrices.reduce(
@@ -89,6 +72,58 @@ function DCATool(props) {
       (stored, value) => stored + amount / value,
       0
     );
+
+    const buysDCA = lowPrices.map(
+      (item, index) =>
+        amount / Math.floor((Number(item) + Number(highPrices[index])) / 2)
+    );
+    const accumulatedDCA = buysDCA.map((item, index) =>
+      buysDCA.slice(0, index + 1).reduce((a, b) => a + b, 0)
+    );
+    const chartValuesDCA = accumulatedDCA.map(
+      (item, index) =>
+        (item *
+          Math.floor(Number(lowPrices[index]) + Number(highPrices[index]))) /
+        2
+    );
+    const chartValuesInvest = lowPrices.map(
+      (item, index) => (index + 1) * amount
+    );
+    console.log(Object.keys(props.priceData));
+    setChartData({
+      labels: Object.keys(dataSelection),
+      datasets: [
+        {
+          label: "DCA Present Value ",
+          data: chartValuesDCA,
+          //data: Data[0].map((data) => data.userGain),
+          // backgroundColor: [
+          //   "rgba(75,192,192,1)",
+          //   "#ecf0f1",
+          //   "#50AF95",
+          //   "#f3ba2f",
+          //   "#2a71d0",
+          // ],
+          borderColor: "black",
+          borderWidth: 2,
+        },
+        {
+          label: "Invested Amount ",
+          data: chartValuesInvest,
+          //data: Data[1].map((data) => data.userGain),
+          // backgroundColor: [
+          //   "rgba(75,192,192,1)",
+          //   "#ecf0f1",
+          //   "#50AF95",
+          //   "#f3ba2f",
+          //   "#2a71d0",
+          // ],
+          borderColor: "red",
+          borderWidth: 2,
+        },
+      ],
+    });
+
     //the total invested amount
     setMoneyInvested(amount * average.length);
     //the present value of the bitcoin accumulated
@@ -186,7 +221,7 @@ function DCATool(props) {
       </button>
 
       <div className="DCA-display">
-        <LineChart chartData={chartData} />
+        {chartData ? <LineChart chartData={chartData} /> : <></>}
         <div>
           Funds Invested: {props.marker}
           {moneyInvested ? moneyInvested : "-"}

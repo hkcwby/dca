@@ -197,6 +197,7 @@ function App() {
               currentPrice={currentPrice}
               menuValues={menuValues}
               priceData={priceData}
+              currency={currency}
             />
           ) : panel === "PriceExplorer" ? (
             <PriceExplorer
