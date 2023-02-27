@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Data } from "../utils/data";
+import { Data } from "../utils/dummyData";
 import LineChart from "./LineChart";
 
 function DCATool(props) {
@@ -72,26 +72,31 @@ function DCATool(props) {
       (stored, value) => stored + amount / value,
       0
     );
-
+    //chart data processing
+    //determine the amount purchased at each interval based on the average price of high and low
     const buysDCA = lowPrices.map(
       (item, index) =>
         amount / Math.floor((Number(item) + Number(highPrices[index])) / 2)
     );
+    //determine how much was accumulated by each interval based on the sum of current plus previous intervals
     const accumulatedDCA = buysDCA.map((item, index) =>
       buysDCA.slice(0, index + 1).reduce((a, b) => a + b, 0)
     );
+    //multiply the current accumulated volume at each interval by the average price at each interval
     const chartValuesDCA = accumulatedDCA.map(
       (item, index) =>
         (item *
           Math.floor(Number(lowPrices[index]) + Number(highPrices[index]))) /
         2
     );
+    // calculate the accumulated investment at each interval
     const chartValuesInvest = lowPrices.map(
       (item, index) => (index + 1) * amount
     );
-    console.log(Object.keys(props.priceData));
+    //set the chart data using the values
+
     setChartData({
-      labels: Object.keys(dataSelection),
+      labels: dataSelection,
       datasets: [
         {
           label: "DCA Present Value ",
