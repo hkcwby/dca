@@ -50,13 +50,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-around;
   border-color: lightgrey;
-  border-radius: 2px;
+  border-radius: 8px;
   border-style: solid;
-  min-height: 30vh;
+  min-height: 50vh;
   min-width: 30vw;
   font-size: smaller;
+  margin: 2vh;
 }
 
 .Price-explorer-panel {
@@ -112,4 +113,10 @@
 .Failed-validation {
   color: red;
   font-size: x-small;
+}
+
+.chart-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
 }

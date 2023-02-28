@@ -6,14 +6,15 @@ function DCATool(props) {
   const [amount, setAmount] = useState(0);
   const [startDate, setStartDate] = useState("");
   const [valueBitcoinAverage, setValueBitcoinAverage] = useState(0);
+  const [moneyInvested, setMoneyInvested] = useState(0);
+  const [valid, setValid] = useState(true);
+  const [chartData, setChartData] = useState();
+
+  //currently unused price options
   const [valueBitcoinHigh, setValueBitcoinHigh] = useState(0);
   const [valueBitcoinLow, setValueBitcoinLow] = useState(0);
   const [valueBitcoinOpen, setValueBitcoinOpen] = useState(0);
   const [valueBitcoinClose, setValueBitcoinClose] = useState(0);
-  const [moneyInvested, setMoneyInvested] = useState(0);
-  const [valid, setValid] = useState(true);
-
-  const [chartData, setChartData] = useState();
 
   function updateAmount(value) {
     isNaN(value) ? setValid(false) : setValid(true);
@@ -142,97 +143,114 @@ function DCATool(props) {
   return (
     <div className="Feature-tab">
       <div className="Summary">Dollar Cost Averaging(DCA) Simulator</div>
-      <select
-        id="currencyDCA"
-        className="select"
-        onChange={(e) => props.updateCurrency(e.target.value)}
-        defaultValue="Select Currency"
-      >
-        <option
-          id="searchType"
-          key="currencySelect"
-          disabled
-          value="Select Currency"
-        >
-          Select Currency
-        </option>
-        <option id="searchType" key="USD">
-          USD
-        </option>
-        <option id="searchType" key="EUR">
-          EUR
-        </option>
-        <option id="searchType" key="JPY">
-          JPY
-        </option>
-        <option id="searchType" key="CNY">
-          CNY
-        </option>
-      </select>
       <div>
-        <input
-          type="text"
-          id="amount"
-          name="fname"
-          onChange={(e) => updateAmount(e.target.value)}
-          placeholder="Enter Incremental Amount"
-        />
-        {valid ? (
-          <></>
-        ) : (
-          <p className="Failed-validation">Please Enter a Number</p>
-        )}
+        <select
+          id="currencyDCA"
+          className="select"
+          onChange={(e) => props.updateCurrency(e.target.value)}
+          defaultValue="Select Currency"
+        >
+          <option
+            id="searchType"
+            key="currencySelect"
+            disabled
+            value="Select Currency"
+          >
+            Select Currency
+          </option>
+          <option id="searchType" key="USD">
+            USD
+          </option>
+          <option id="searchType" key="EUR">
+            EUR
+          </option>
+          <option id="searchType" key="JPY">
+            JPY
+          </option>
+          <option id="searchType" key="CNY">
+            CNY
+          </option>
+        </select>
+        <div>
+          <input
+            type="text"
+            id="amount"
+            name="fname"
+            onChange={(e) => updateAmount(e.target.value)}
+            placeholder="Enter Incremental Amount"
+          />
+          {valid ? (
+            <></>
+          ) : (
+            <p className="Failed-validation">Please Enter a Number</p>
+          )}
+        </div>
+        <select
+          id="basisDCA"
+          className="select"
+          onChange={(e) => props.updateSearchCriteriaDCA(e.target.value)}
+          defaultValue="DCA Basis"
+        >
+          <option id="searchType" key="placeholder" disabled value="DCA Basis">
+            DCA Basis
+          </option>
+          <option id="searchType" key="day" value="Daily">
+            Daily
+          </option>
+          <option id="searchType" key="week" value="Weekly">
+            Weekly
+          </option>
+          <option id="searchType" key="month" value="Monthly">
+            Monthly
+          </option>
+        </select>
+        <select
+          className="select"
+          id="startPointDCA"
+          disabled
+          onChange={(e) => setStartDate(e.target.value)}
+          defaultValue="Start Date"
+        >
+          <option key="timePeriod" defaultValue hidden value="Start Date">
+            Start Date
+          </option>
+          {props.menuValues.map((value) => (
+            <option key={value}>{value}</option>
+          ))}
+        </select>
+        <button
+          className="Calculate"
+          type="button"
+          value="Calculate"
+          onClick={calculateDCA}
+        >
+          Calculate
+        </button>
       </div>
-      <select
-        id="basisDCA"
-        className="select"
-        onChange={(e) => props.updateSearchCriteriaDCA(e.target.value)}
-        defaultValue="DCA Basis"
-      >
-        <option id="searchType" key="placeholder" disabled value="DCA Basis">
-          DCA Basis
-        </option>
-        <option id="searchType" key="day" value="Daily">
-          Daily
-        </option>
-        <option id="searchType" key="week" value="Weekly">
-          Weekly
-        </option>
-        <option id="searchType" key="month" value="Monthly">
-          Monthly
-        </option>
-      </select>
-      <select
-        className="select"
-        id="startPointDCA"
-        disabled
-        onChange={(e) => setStartDate(e.target.value)}
-        defaultValue="Start Date"
-      >
-        <option key="timePeriod" defaultValue hidden value="Start Date">
-          Start Date
-        </option>
-        {props.menuValues.map((value) => (
-          <option key={value}>{value}</option>
-        ))}
-      </select>
-      <button
-        className="Calculate"
-        type="button"
-        value="Calculate"
-        onClick={calculateDCA}
-      >
-        Calculate
-      </button>
-
       <div className="DCA-display">
         {chartData ? <LineChart chartData={chartData} /> : <></>}
         <div>
-          Funds Invested: {props.marker}
-          {moneyInvested ? moneyInvested : "-"}
+          <div className="Summary">Summary</div>
+          <div>
+            Funds Invested: {props.marker}
+            {moneyInvested ? moneyInvested : "-"}
+          </div>
+          <div>
+            Present Value: {props.marker}
+            {chartData.datasets[0].data[chartData.datasets[0].data.length - 1]
+              ? Math.floor(
+                  chartData.datasets[0].data[
+                    chartData.datasets[0].data.length - 1
+                  ]
+                )
+              : "-"}
+          </div>
+          {/* <div>
+            Present Value: {props.marker}
+            {valueBitcoinAverage ? valueBitcoinAverage : "-"}
+          </div> */}
         </div>
-        <div className="Summary">Summary</div>
-        <div>PV Based On Point Of Purchase:</div>
+        {/* <div>PV Based On Point Of Purchase:</div>
         <div>
           Low of each period: {props.marker}
           {valueBitcoinLow ? valueBitcoinLow : "-"}
@@ -252,7 +270,7 @@ function DCATool(props) {
         <div>
           Close of each period: {props.marker}
           {valueBitcoinClose ? valueBitcoinClose : "-"}
-        </div>
+        </div> */}
       </div>
     </div>
   );
