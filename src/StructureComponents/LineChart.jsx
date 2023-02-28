@@ -14,7 +14,8 @@ function LineChart({ chartData }) {
               text: "DCA Value vs Invested Amount",
             },
             legend: {
-              display: false,
+              display: true,
+              fullSize: true,
             },
           },
         }}

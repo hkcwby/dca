@@ -62,7 +62,7 @@ function DCATool(props) {
       labels: dataSelection,
       datasets: [
         {
-          label: "DCA Present Value ",
+          label: "DCA Present Value",
           data: chartValuesDCA,
           borderColor: "black",
           borderWidth: 2,
@@ -70,7 +70,13 @@ function DCATool(props) {
         {
           label: "Invested Amount ",
           data: chartValuesInvest,
-          borderColor: "red",
+          borderColor: "grey",
+          borderWidth: 2,
+        },
+        {
+          label: "BTC Price",
+          data: average,
+          borderColor: "orange",
           borderWidth: 2,
         },
       ],
