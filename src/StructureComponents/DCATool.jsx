@@ -14,7 +14,7 @@ function DCATool(props) {
   }
   function calculateDCA() {
     const data = Object.keys(props.priceData);
-    const dataSelection = data.slice(0, data.indexOf(startDate) + 1);
+    const dataSelection = data.slice(0, data.indexOf(startDate) + 1).reverse();
 
     //gather all the high prices
     const highPrices = dataSelection.map(
