@@ -237,12 +237,10 @@ function DCATool(props) {
           </div>
           <div>
             Present Value: {props.marker}
-            {chartData.datasets[0].data[chartData.datasets[0].data.length - 1]
-              ? Math.floor(
-                  chartData.datasets[0].data[
-                    chartData.datasets[0].data.length - 1
-                  ]
-                )
+            {chartData
+              ? chartData.datasets[0].data[
+                  chartData.datasets[0].data.length - 1
+                ]
               : "-"}
           </div>
           {/* <div>
