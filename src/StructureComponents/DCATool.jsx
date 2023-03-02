@@ -71,7 +71,7 @@ function DCATool(props) {
     );
     const BTDsavings = chartValuesInvest.map((item) => Number(amount));
     const tracker = chartValuesInvest.map((item, index) =>
-      priceMovements[index] <= -10 ? 0 : 1
+      priceMovements[index] <= -5 ? 0 : 1
     );
 
     BTDsavings.forEach((item, index, array) => {
@@ -83,7 +83,38 @@ function DCATool(props) {
       }
     });
 
-    console.log(tracker, BTDsavings);
+    const buysBTD = lowPrices.map((item, index) =>
+      BTDsavings[index]
+        ? BTDsavings[index] /
+          Math.floor((Number(item) + Number(highPrices[index])) / 2)
+        : 0
+    );
+    if (tracker[tracker.length - 1] == 1) buysBTD[buysBTD.length - 1] = 0;
+
+    const buysCumulativeBTD = [...buysBTD];
+
+    buysCumulativeBTD.forEach((item, index, array) => {
+      console.log(array[index + 1]);
+      if (index < array.length - 1) array[index + 1] += item;
+    });
+
+    const valueCumulativeBTD = buysCumulativeBTD.map(
+      (item, index) => item * average[index]
+    );
+
+    const cashBTD = [...tracker];
+
+    cashBTD.forEach((item, index, array) => {
+      if (index == 0) array[index] = Number(amount);
+      else if (index > 0 && tracker[index] == 1)
+        array[index] = array[index - 1] + Number(amount);
+      else array[index] = 0;
+    });
+
+    const investBTD = cashBTD.map(
+      (item, index) => item + valueCumulativeBTD[index]
+    );
+    console.log(BTDsavings, tracker, buysBTD);
 
     //set the chart data using the values
     setChartData({
@@ -101,18 +132,24 @@ function DCATool(props) {
           borderColor: "grey",
           borderWidth: 2,
         },
+        // {
+        //   label: "YOLO",
+        //   data: yoloInvest,
+        //   borderColor: "red",
+        //   borderWidth: 2,
+        // },
         {
-          label: "YOLO",
-          data: yoloInvest,
-          borderColor: "red",
+          label: "BTD",
+          data: investBTD,
+          borderColor: "green",
           borderWidth: 2,
         },
-        {
-          label: "BTC Price",
-          data: average,
-          borderColor: "orange",
-          borderWidth: 2,
-        },
+        // {
+        //   label: "BTC Price",
+        //   data: average,
+        //   borderColor: "orange",
+        //   borderWidth: 2,
+        // },
       ],
     });
 
