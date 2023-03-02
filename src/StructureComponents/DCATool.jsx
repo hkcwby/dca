@@ -31,10 +31,10 @@ function DCATool(props) {
       Math.floor((Number(item) + Number(highPrices[index])) / 2)
     );
     //calculate purchases of bitcoin based on fixed amount per increment
-    const bitcoinAverage = average.reduce(
-      (stored, value) => stored + amount / value,
-      0
-    );
+    // const bitcoinAverage = average.reduce(
+    //   (stored, value) => stored + amount / value,
+    //   0
+    // );
     //chart data processing
     //determine the amount purchased at each interval based on the average price of high and low
     const buysDCA = lowPrices.map(
@@ -56,8 +56,36 @@ function DCATool(props) {
     const chartValuesInvest = lowPrices.map(
       (item, index) => (index + 1) * amount
     );
-    //set the chart data using the values
 
+    // YOLO - you only live once - an upfront all in investment
+    // Total YOLO amount matches the amount spent in total on DCA for fair comparison
+    const yoloAmount =
+      chartValuesInvest[chartValuesInvest.length - 1] / average[0];
+    // The amount
+    const yoloInvest = average.map((item) => Math.floor(item * yoloAmount));
+
+    //BTD - buy the dip - purchase amounts when the price dips by a certain amount
+    // track price movements
+    const priceMovements = average.map((item, index) =>
+      index == 0 ? 0 : ((item - average[index - 1]) / average[index - 1]) * 100
+    );
+    const BTDsavings = chartValuesInvest.map((item) => Number(amount));
+    const tracker = chartValuesInvest.map((item, index) =>
+      priceMovements[index] <= -10 ? 0 : 1
+    );
+
+    BTDsavings.forEach((item, index, array) => {
+      if (index < array.length - 1) {
+        if (tracker[index] == 1) {
+          array[index + 1] += array[index];
+          array[index] = 0;
+        }
+      }
+    });
+
+    console.log(tracker, BTDsavings);
+
+    //set the chart data using the values
     setChartData({
       labels: dataSelection,
       datasets: [
@@ -68,9 +96,15 @@ function DCATool(props) {
           borderWidth: 2,
         },
         {
-          label: "Invested Amount ",
+          label: "Invested Amount",
           data: chartValuesInvest,
           borderColor: "grey",
+          borderWidth: 2,
+        },
+        {
+          label: "YOLO",
+          data: yoloInvest,
+          borderColor: "red",
           borderWidth: 2,
         },
         {
