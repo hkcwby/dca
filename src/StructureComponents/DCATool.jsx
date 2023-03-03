@@ -138,12 +138,12 @@ function DCATool(props) {
         //   borderColor: "red",
         //   borderWidth: 2,
         // },
-        {
-          label: "BTD",
-          data: investBTD,
-          borderColor: "green",
-          borderWidth: 2,
-        },
+        // {
+        //   label: "BTD",
+        //   data: investBTD,
+        //   borderColor: "green",
+        //   borderWidth: 2,
+        // },
         // {
         //   label: "BTC Price",
         //   data: average,
