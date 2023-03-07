@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "./AxiosSetup";
 import PriceExplorer from "./StructureComponents/PriceExplorer";
 import DCATool from "./StructureComponents/DCATool";
+import BTDTool from "./StructureComponents/BTDTool";
 import Settings from "./StructureComponents/Settings";
 import DayAnalysis from "./StructureComponents/DayAnalysis";
 
@@ -109,6 +110,14 @@ function App() {
     document.querySelector("#DCA-tool-tag").classList.add("Menu-selected");
   }
 
+  function selectBTDTool() {
+    setPanel("BTDTool");
+    document
+      .querySelectorAll(".Menu-option")
+      .forEach((item) => item.classList.remove("Menu-selected"));
+    document.querySelector("#BTD-tool-tag").classList.add("Menu-selected");
+  }
+
   function selectDayAnalysis() {
     setPanel("DayAnalysis");
     document
@@ -199,6 +208,17 @@ function App() {
               priceData={priceData}
               currency={currency}
             />
+          ) : panel === "BTDTool" ? (
+            <BTDTool
+              updateCurrency={updateCurrency}
+              updateSearchCriteriaDCA={updateSearchCriteriaDCA}
+              updatePrices={updatePrices}
+              marker={marker}
+              currentPrice={currentPrice}
+              menuValues={menuValues}
+              priceData={priceData}
+              currency={currency}
+            />
           ) : panel === "PriceExplorer" ? (
             <PriceExplorer
               updateCurrency={updateCurrency}
@@ -234,6 +254,13 @@ function App() {
               onClick={selectDCATool}
             >
               DCA Tool
+            </div>
+            <div
+              className="Menu-option"
+              id="BTD-tool-tag"
+              onClick={selectBTDTool}
+            >
+              BTD Tool
             </div>
             <div
               className="Menu-option"

@@ -53,6 +53,65 @@ function DCATool(props) {
       (item, index) => (index + 1) * amount
     );
 
+    // YOLO - you only live once - an upfront all in investment
+    // Total YOLO amount matches the amount spent in total on DCA for fair comparison
+    const yoloAmount =
+      chartValuesInvest[chartValuesInvest.length - 1] / average[0];
+    // The amount
+    const yoloInvest = average.map((item) => Math.floor(item * yoloAmount));
+
+    //BTD - buy the dip - purchase amounts when the price dips by a certain amount
+    // track price movements
+    const priceMovements = average.map((item, index) =>
+      index == 0 ? 0 : ((item - average[index - 1]) / average[index - 1]) * 100
+    );
+    const BTDsavings = chartValuesInvest.map((item) => Number(amount));
+    const tracker = chartValuesInvest.map((item, index) =>
+      priceMovements[index] <= -5 ? 0 : 1
+    );
+
+    BTDsavings.forEach((item, index, array) => {
+      if (index < array.length - 1) {
+        if (tracker[index] == 1) {
+          array[index + 1] += array[index];
+          array[index] = 0;
+        }
+      }
+    });
+
+    const buysBTD = lowPrices.map((item, index) =>
+      BTDsavings[index]
+        ? BTDsavings[index] /
+          Math.floor((Number(item) + Number(highPrices[index])) / 2)
+        : 0
+    );
+    if (tracker[tracker.length - 1] == 1) buysBTD[buysBTD.length - 1] = 0;
+
+    const buysCumulativeBTD = [...buysBTD];
+
+    buysCumulativeBTD.forEach((item, index, array) => {
+      console.log(array[index + 1]);
+      if (index < array.length - 1) array[index + 1] += item;
+    });
+
+    const valueCumulativeBTD = buysCumulativeBTD.map(
+      (item, index) => item * average[index]
+    );
+
+    const cashBTD = [...tracker];
+
+    cashBTD.forEach((item, index, array) => {
+      if (index == 0) array[index] = Number(amount);
+      else if (index > 0 && tracker[index] == 1)
+        array[index] = array[index - 1] + Number(amount);
+      else array[index] = 0;
+    });
+
+    const investBTD = cashBTD.map(
+      (item, index) => item + valueCumulativeBTD[index]
+    );
+    console.log(BTDsavings, tracker, buysBTD);
+
     //set the chart data using the values
     setChartData({
       labels: dataSelection,
@@ -69,7 +128,18 @@ function DCATool(props) {
           borderColor: "grey",
           borderWidth: 2,
         },
-
+        {
+          label: "YOLO",
+          data: yoloInvest,
+          borderColor: "red",
+          borderWidth: 2,
+        },
+        {
+          label: "BTD",
+          data: investBTD,
+          borderColor: "green",
+          borderWidth: 2,
+        },
         {
           label: "BTC Price",
           data: average,
