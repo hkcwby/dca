@@ -1,7 +1,7 @@
 import { useState } from "react";
 import LineChart from "./LineChart";
 
-function BTDTool(props) {
+function YOLOTool(props) {
   const [amount, setAmount] = useState(0);
   const [startDate, setStartDate] = useState("");
   const [moneyInvested, setMoneyInvested] = useState(0);
@@ -50,7 +50,7 @@ function BTDTool(props) {
     );
     // calculate the accumulated investment at each interval
     const chartValuesInvest = lowPrices.map(
-      (item, index) => (index + 1) * amount
+      (item) => lowPrices.length * amount
     );
 
     // YOLO - you only live once - an upfront all in investment
@@ -117,9 +117,9 @@ function BTDTool(props) {
       labels: dataSelection,
       datasets: [
         {
-          label: "YOLO",
-          data: yoloInvest,
-          borderColor: "red",
+          label: "BTD",
+          data: investBTD,
+          borderColor: "green",
           borderWidth: 2,
         },
         {
@@ -128,6 +128,12 @@ function BTDTool(props) {
           borderColor: "grey",
           borderWidth: 2,
         },
+        // {
+        //   label: "YOLO",
+        //   data: yoloInvest,
+        //   borderColor: "red",
+        //   borderWidth: 2,
+        // },
         {
           label: "BTC Price",
           data: average,
@@ -252,4 +258,4 @@ function BTDTool(props) {
   );
 }
 
-export default BTDTool;
+export default YOLOTool;
