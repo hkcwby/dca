@@ -117,29 +117,23 @@ function YOLOTool(props) {
       labels: dataSelection,
       datasets: [
         {
-          label: "BTD",
-          data: investBTD,
-          borderColor: "green",
-          borderWidth: 2,
-        },
-        {
           label: "Invested Amount",
           data: chartValuesInvest,
           borderColor: "grey",
           borderWidth: 2,
         },
-        // {
-        //   label: "YOLO",
-        //   data: yoloInvest,
-        //   borderColor: "red",
-        //   borderWidth: 2,
-        // },
         {
-          label: "BTC Price",
-          data: average,
-          borderColor: "orange",
+          label: "YOLO",
+          data: yoloInvest,
+          borderColor: "red",
           borderWidth: 2,
         },
+        // {
+        //   label: "BTC Price",
+        //   data: average,
+        //   borderColor: "orange",
+        //   borderWidth: 2,
+        // },
       ],
     });
 
@@ -149,7 +143,7 @@ function YOLOTool(props) {
 
   return (
     <div className="Feature-tab">
-      <div className="Summary">Buy The Dip(BTD) Simulator</div>
+      <div className="Summary">You Only Live Once(YOLO) Simulator</div>
       <div>
         <select
           id="currencyDCA"
@@ -184,7 +178,7 @@ function YOLOTool(props) {
             id="amount"
             name="fname"
             onChange={(e) => updateAmount(e.target.value)}
-            placeholder="Enter Incremental Amount"
+            placeholder="Total Investment Amount"
           />
           {valid ? (
             <></>

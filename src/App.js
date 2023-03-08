@@ -4,6 +4,7 @@ import axios from "./AxiosSetup";
 import PriceExplorer from "./StructureComponents/PriceExplorer";
 import DCATool from "./StructureComponents/DCATool";
 import BTDTool from "./StructureComponents/BTDTool";
+import YOLOTool from "./StructureComponents/YOLOTool";
 import Settings from "./StructureComponents/Settings";
 import DayAnalysis from "./StructureComponents/DayAnalysis";
 
@@ -118,6 +119,14 @@ function App() {
     document.querySelector("#BTD-tool-tag").classList.add("Menu-selected");
   }
 
+  function selectYOLOTool() {
+    setPanel("YOLOTool");
+    document
+      .querySelectorAll(".Menu-option")
+      .forEach((item) => item.classList.remove("Menu-selected"));
+    document.querySelector("#YOLO-tool-tag").classList.add("Menu-selected");
+  }
+
   function selectDayAnalysis() {
     setPanel("DayAnalysis");
     document
@@ -219,6 +228,17 @@ function App() {
               priceData={priceData}
               currency={currency}
             />
+          ) : panel === "YOLOTool" ? (
+            <YOLOTool
+              updateCurrency={updateCurrency}
+              updateSearchCriteriaDCA={updateSearchCriteriaDCA}
+              updatePrices={updatePrices}
+              marker={marker}
+              currentPrice={currentPrice}
+              menuValues={menuValues}
+              priceData={priceData}
+              currency={currency}
+            />
           ) : panel === "PriceExplorer" ? (
             <PriceExplorer
               updateCurrency={updateCurrency}
@@ -261,6 +281,13 @@ function App() {
               onClick={selectBTDTool}
             >
               BTD Tool
+            </div>
+            <div
+              className="Menu-option"
+              id="YOLO-tool-tag"
+              onClick={selectYOLOTool}
+            >
+              YOLO Tool
             </div>
             <div
               className="Menu-option"

@@ -117,9 +117,9 @@ function BTDTool(props) {
       labels: dataSelection,
       datasets: [
         {
-          label: "YOLO",
-          data: yoloInvest,
-          borderColor: "red",
+          label: "BTD",
+          data: investBTD,
+          borderColor: "green",
           borderWidth: 2,
         },
         {
