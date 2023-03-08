@@ -190,10 +190,15 @@ function YOLOTool(props) {
           id="basisDCA"
           className="select"
           onChange={(e) => props.updateSearchCriteriaDCA(e.target.value)}
-          defaultValue="DCA Basis"
+          defaultValue="Tracking Basis"
         >
-          <option id="searchType" key="placeholder" disabled value="DCA Basis">
-            DCA Basis
+          <option
+            id="searchType"
+            key="placeholder"
+            disabled
+            value="Tracking Basis"
+          >
+            YOLO Basis
           </option>
           <option id="searchType" key="day" value="Daily">
             Daily
