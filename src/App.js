@@ -61,6 +61,15 @@ function App() {
     dataFetch(selection);
     document.querySelector("#startPointDCA").disabled = false;
   }
+  function updateSearchCriteriaBTD(selection) {
+    dataFetch(selection);
+    document.querySelector("#startPointBTD").disabled = false;
+  }
+
+  function updateSearchCriteriaYOLO(selection) {
+    dataFetch(selection);
+    document.querySelector("#startPointYOLO").disabled = false;
+  }
 
   //the current price displayed for reference for the explorer
   const [currentPrice, setCurrentPrice] = useState(0);
@@ -220,7 +229,7 @@ function App() {
           ) : panel === "BTDTool" ? (
             <BTDTool
               updateCurrency={updateCurrency}
-              updateSearchCriteriaDCA={updateSearchCriteriaDCA}
+              updateSearchCriteriaBTD={updateSearchCriteriaBTD}
               updatePrices={updatePrices}
               marker={marker}
               currentPrice={currentPrice}
@@ -231,7 +240,7 @@ function App() {
           ) : panel === "YOLOTool" ? (
             <YOLOTool
               updateCurrency={updateCurrency}
-              updateSearchCriteriaDCA={updateSearchCriteriaDCA}
+              updateSearchCriteriaYOLO={updateSearchCriteriaYOLO}
               updatePrices={updatePrices}
               marker={marker}
               currentPrice={currentPrice}
@@ -273,21 +282,21 @@ function App() {
               id="DCA-tool-tag"
               onClick={selectDCATool}
             >
-              DCA Tool
+              DCA
             </div>
             <div
               className="Menu-option"
               id="BTD-tool-tag"
               onClick={selectBTDTool}
             >
-              BTD Tool
+              BTD
             </div>
             <div
               className="Menu-option"
               id="YOLO-tool-tag"
               onClick={selectYOLOTool}
             >
-              YOLO Tool
+              YOLO
             </div>
             <div
               className="Menu-option"

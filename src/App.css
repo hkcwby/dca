@@ -46,7 +46,7 @@
   font-size: smaller;
 }
 
-.DCA-display {
+.panel-display {
   display: flex;
   flex-direction: column;
   align-items: center;

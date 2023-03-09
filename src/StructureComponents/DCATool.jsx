@@ -170,7 +170,7 @@ function DCATool(props) {
           Calculate
         </button>
       </div>
-      <div className="DCA-display">
+      <div className="panel-display">
         {chartData ? <LineChart chartData={chartData} /> : <></>}
         <div>
           <div className="Summary">Summary</div>

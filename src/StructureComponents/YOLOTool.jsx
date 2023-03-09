@@ -12,7 +12,7 @@ function YOLOTool(props) {
     isNaN(value) ? setValid(false) : setValid(true);
     if (valid) setAmount(value);
   }
-  function calculateDCA() {
+  function calculateYOLO() {
     const data = Object.keys(props.priceData);
     const dataSelection = data.slice(0, data.indexOf(startDate) + 1).reverse();
 
@@ -32,29 +32,12 @@ function YOLOTool(props) {
     );
 
     //chart data processing
-    //determine the amount purchased at each interval based on the average price of high and low
-    const buysDCA = lowPrices.map(
-      (item, index) =>
-        amount / Math.floor((Number(item) + Number(highPrices[index])) / 2)
-    );
-    //determine how much was accumulated by each interval based on the sum of current plus previous intervals
-    const accumulatedDCA = buysDCA.map((item, index) =>
-      buysDCA.slice(0, index + 1).reduce((a, b) => a + b, 0)
-    );
-    //multiply the current accumulated volume at each interval by the average price at each interval
-    const chartValuesDCA = accumulatedDCA.map(
-      (item, index) =>
-        (item *
-          Math.floor(Number(lowPrices[index]) + Number(highPrices[index]))) /
-        2
-    );
     // calculate the accumulated investment at each interval
     const chartValuesInvest = lowPrices.map(
       (item) => lowPrices.length * amount
     );
 
     // YOLO - you only live once - an upfront all in investment
-    // Total YOLO amount matches the amount spent in total on DCA for fair comparison
     const yoloAmount =
       chartValuesInvest[chartValuesInvest.length - 1] / average[0];
     // The amount
@@ -146,7 +129,7 @@ function YOLOTool(props) {
       <div className="Summary">You Only Live Once(YOLO) Simulator</div>
       <div>
         <select
-          id="currencyDCA"
+          id="currencyYOLO"
           className="select"
           onChange={(e) => props.updateCurrency(e.target.value)}
           defaultValue="Select Currency"
@@ -187,9 +170,9 @@ function YOLOTool(props) {
           )}
         </div>
         <select
-          id="basisDCA"
+          id="basisYOLO"
           className="select"
-          onChange={(e) => props.updateSearchCriteriaDCA(e.target.value)}
+          onChange={(e) => props.updateSearchCriteriaYOLO(e.target.value)}
           defaultValue="Tracking Basis"
         >
           <option
@@ -198,7 +181,7 @@ function YOLOTool(props) {
             disabled
             value="Tracking Basis"
           >
-            YOLO Basis
+            Tracking Basis
           </option>
           <option id="searchType" key="day" value="Daily">
             Daily
@@ -212,7 +195,7 @@ function YOLOTool(props) {
         </select>
         <select
           className="select"
-          id="startPointDCA"
+          id="startPointYOLO"
           disabled
           onChange={(e) => setStartDate(e.target.value)}
           defaultValue="Start Date"
@@ -228,12 +211,12 @@ function YOLOTool(props) {
           className="Calculate"
           type="button"
           value="Calculate"
-          onClick={calculateDCA}
+          onClick={calculateYOLO}
         >
           Calculate
         </button>
       </div>
-      <div className="DCA-display">
+      <div className="panel-display">
         {chartData ? <LineChart chartData={chartData} /> : <></>}
         <div>
           <div className="Summary">Summary</div>

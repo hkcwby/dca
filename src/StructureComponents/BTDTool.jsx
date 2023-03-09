@@ -7,12 +7,18 @@ function BTDTool(props) {
   const [moneyInvested, setMoneyInvested] = useState(0);
   const [valid, setValid] = useState(true);
   const [chartData, setChartData] = useState();
+  const [dip, setDip] = useState(5);
 
   function updateAmount(value) {
     isNaN(value) ? setValid(false) : setValid(true);
     if (valid) setAmount(value);
   }
-  function calculateDCA() {
+
+  function updateDipAmount(value) {
+    setDip(value);
+  }
+
+  function calculateBTD() {
     const data = Object.keys(props.priceData);
     const dataSelection = data.slice(0, data.indexOf(startDate) + 1).reverse();
 
@@ -32,34 +38,10 @@ function BTDTool(props) {
     );
 
     //chart data processing
-    //determine the amount purchased at each interval based on the average price of high and low
-    const buysDCA = lowPrices.map(
-      (item, index) =>
-        amount / Math.floor((Number(item) + Number(highPrices[index])) / 2)
-    );
-    //determine how much was accumulated by each interval based on the sum of current plus previous intervals
-    const accumulatedDCA = buysDCA.map((item, index) =>
-      buysDCA.slice(0, index + 1).reduce((a, b) => a + b, 0)
-    );
-    //multiply the current accumulated volume at each interval by the average price at each interval
-    const chartValuesDCA = accumulatedDCA.map(
-      (item, index) =>
-        (item *
-          Math.floor(Number(lowPrices[index]) + Number(highPrices[index]))) /
-        2
-    );
     // calculate the accumulated investment at each interval
     const chartValuesInvest = lowPrices.map(
       (item, index) => (index + 1) * amount
     );
-
-    // YOLO - you only live once - an upfront all in investment
-    // Total YOLO amount matches the amount spent in total on DCA for fair comparison
-    const yoloAmount =
-      chartValuesInvest[chartValuesInvest.length - 1] / average[0];
-    // The amount
-    const yoloInvest = average.map((item) => Math.floor(item * yoloAmount));
-
     //BTD - buy the dip - purchase amounts when the price dips by a certain amount
     // track price movements
     const priceMovements = average.map((item, index) =>
@@ -67,7 +49,7 @@ function BTDTool(props) {
     );
     const BTDsavings = chartValuesInvest.map((item) => Number(amount));
     const tracker = chartValuesInvest.map((item, index) =>
-      priceMovements[index] <= -3 ? 0 : 1
+      priceMovements[index] <= -dip ? 0 : 1
     );
 
     BTDsavings.forEach((item, index, array) => {
@@ -146,7 +128,7 @@ function BTDTool(props) {
       <div className="Summary">Buy The Dip(BTD) Simulator</div>
       <div>
         <select
-          id="currencyDCA"
+          id="currencyBTD"
           className="select"
           onChange={(e) => props.updateCurrency(e.target.value)}
           defaultValue="Select Currency"
@@ -180,6 +162,27 @@ function BTDTool(props) {
             onChange={(e) => updateAmount(e.target.value)}
             placeholder="Enter Incremental Amount"
           />
+          <select
+            className="select"
+            id="dipBTD"
+            // disabled
+            onChange={(e) => updateDipAmount(e.target.value)}
+            defaultValue="Dip % (default 5%)"
+          >
+            <option
+              key="dipPercent"
+              defaultValue
+              hidden
+              value="Dip % (default 5%)"
+            >
+              Dip % (default 5%)
+            </option>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(
+              (value) => (
+                <option key={value}>{value}</option>
+              )
+            )}
+          </select>
           {valid ? (
             <></>
           ) : (
@@ -187,13 +190,13 @@ function BTDTool(props) {
           )}
         </div>
         <select
-          id="basisDCA"
+          id="basisBTD"
           className="select"
-          onChange={(e) => props.updateSearchCriteriaDCA(e.target.value)}
-          defaultValue="DCA Basis"
+          onChange={(e) => props.updateSearchCriteriaBTD(e.target.value)}
+          defaultValue="BTD Basis"
         >
-          <option id="searchType" key="placeholder" disabled value="DCA Basis">
-            DCA Basis
+          <option id="searchType" key="placeholder" disabled value="BTD Basis">
+            BTD Basis
           </option>
           <option id="searchType" key="day" value="Daily">
             Daily
@@ -207,7 +210,7 @@ function BTDTool(props) {
         </select>
         <select
           className="select"
-          id="startPointDCA"
+          id="startPointBTD"
           disabled
           onChange={(e) => setStartDate(e.target.value)}
           defaultValue="Start Date"
@@ -223,12 +226,12 @@ function BTDTool(props) {
           className="Calculate"
           type="button"
           value="Calculate"
-          onClick={calculateDCA}
+          onClick={calculateBTD}
         >
           Calculate
         </button>
       </div>
-      <div className="DCA-display">
+      <div className="panel-display">
         {chartData ? <LineChart chartData={chartData} /> : <></>}
         <div>
           <div className="Summary">Summary</div>
