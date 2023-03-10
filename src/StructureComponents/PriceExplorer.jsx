@@ -1,4 +1,9 @@
 function PriceExplorer(props) {
+  // function to update the data type and unlock the date time option
+  function updateSearchCriteria(selection) {
+    props.dataFetch(selection);
+    document.querySelector("#dateTimeSelect").disabled = false;
+  }
   return (
     <>
       <div className="Feature-tab">
@@ -33,7 +38,7 @@ function PriceExplorer(props) {
         </select>
         <select
           className="select"
-          onChange={(e) => props.updateSearchCriteria(e.target.value)}
+          onChange={(e) => updateSearchCriteria(e.target.value)}
           defaultValue="Search Type"
         >
           <option

@@ -51,26 +51,6 @@ function App() {
   //the values to display, these need to be fetched
   const [menuValues, setMenuValues] = useState(["-"]);
 
-  // function to update the data type and unlock the date time option
-  function updateSearchCriteria(selection) {
-    dataFetch(selection);
-    document.querySelector("#dateTimeSelect").disabled = false;
-  }
-
-  // function updateSearchCriteriaDCA(selection) {
-  //   dataFetch(selection);
-  //   document.querySelector("#startPointDCA").disabled = false;
-  // }
-  // function updateSearchCriteriaBTD(selection) {
-  //   dataFetch(selection);
-  //   document.querySelector("#startPointBTD").disabled = false;
-  // }
-
-  // function updateSearchCriteriaYOLO(selection) {
-  //   dataFetch(selection);
-  //   document.querySelector("#startPointYOLO").disabled = false;
-  // }
-
   //the current price displayed for reference for the explorer
   const [currentPrice, setCurrentPrice] = useState(0);
   //raw price data from fetch call
@@ -251,7 +231,7 @@ function App() {
           ) : panel === "PriceExplorer" ? (
             <PriceExplorer
               updateCurrency={updateCurrency}
-              updateSearchCriteria={updateSearchCriteria}
+              dataFetch={dataFetch}
               updatePrices={updatePrices}
               loading={loading}
               prices={prices}
