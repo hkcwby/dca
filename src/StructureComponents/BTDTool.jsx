@@ -78,7 +78,6 @@ function BTDTool(props) {
     const buysCumulativeBTD = [...buysBTD];
 
     buysCumulativeBTD.forEach((item, index, array) => {
-      console.log(array[index + 1]);
       if (index < array.length - 1) array[index + 1] += item;
     });
 
@@ -98,7 +97,6 @@ function BTDTool(props) {
     const investBTD = cashBTD.map(
       (item, index) => item + valueCumulativeBTD[index]
     );
-    console.log(BTDsavings, tracker, buysBTD);
 
     //set the chart data using the values
     setChartData({

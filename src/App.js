@@ -23,10 +23,8 @@ function App() {
   const [marker, setMarker] = useState(currencySymbols.USD);
 
   function updateCurrency(selection) {
-    console.log(selection);
     setCurrency(selection);
     setMarker(currencySymbols[selection]);
-    console.log(marker);
   }
   //the various end points used for fetching data
   const endpoints = {
@@ -278,6 +276,7 @@ function App() {
             >
               YOLO
             </div>
+
             <div
               className="Menu-option"
               id="Day-analysis-tag"
