@@ -7,6 +7,7 @@ import BTDTool from "./StructureComponents/BTDTool";
 import YOLOTool from "./StructureComponents/YOLOTool";
 import Settings from "./StructureComponents/Settings";
 import DayAnalysis from "./StructureComponents/DayAnalysis";
+import CompTool from "./StructureComponents/CompTool";
 
 function App() {
   //setting up reference API Key
@@ -112,6 +113,14 @@ function App() {
       .querySelectorAll(".Menu-option")
       .forEach((item) => item.classList.remove("Menu-selected"));
     document.querySelector("#YOLO-tool-tag").classList.add("Menu-selected");
+  }
+
+  function selectCompTool() {
+    setPanel("CompTool");
+    document
+      .querySelectorAll(".Menu-option")
+      .forEach((item) => item.classList.remove("Menu-selected"));
+    document.querySelector("#Comp-tool-tag").classList.add("Menu-selected");
   }
 
   function selectDayAnalysis() {
@@ -226,6 +235,17 @@ function App() {
               priceData={priceData}
               currency={currency}
             />
+          ) : panel === "CompTool" ? (
+            <CompTool
+              updateCurrency={updateCurrency}
+              dataFetch={dataFetch}
+              updatePrices={updatePrices}
+              marker={marker}
+              currentPrice={currentPrice}
+              menuValues={menuValues}
+              priceData={priceData}
+              currency={currency}
+            />
           ) : panel === "PriceExplorer" ? (
             <PriceExplorer
               updateCurrency={updateCurrency}
@@ -275,6 +295,13 @@ function App() {
               onClick={selectYOLOTool}
             >
               YOLO
+            </div>
+            <div
+              className="Menu-option"
+              id="Comp-tool-tag"
+              onClick={selectCompTool}
+            >
+              Compare
             </div>
 
             <div
