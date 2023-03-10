@@ -75,6 +75,7 @@ function DCATool(props) {
           data: average,
           borderColor: "orange",
           borderWidth: 2,
+          hidden: true,
         },
       ],
     });

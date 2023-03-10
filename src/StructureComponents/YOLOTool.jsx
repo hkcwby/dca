@@ -111,12 +111,6 @@ function YOLOTool(props) {
           borderColor: "red",
           borderWidth: 2,
         },
-        // {
-        //   label: "BTC Price",
-        //   data: average,
-        //   borderColor: "orange",
-        //   borderWidth: 2,
-        // },
       ],
     });
 
