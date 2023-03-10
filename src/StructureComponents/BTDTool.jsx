@@ -9,6 +9,11 @@ function BTDTool(props) {
   const [chartData, setChartData] = useState();
   const [dip, setDip] = useState(5);
 
+  function updateSearchCriteriaBTD(selection) {
+    props.dataFetch(selection);
+    document.querySelector("#startPointBTD").disabled = false;
+  }
+
   function updateAmount(value) {
     isNaN(value) ? setValid(false) : setValid(true);
     if (valid) setAmount(value);
@@ -47,10 +52,11 @@ function BTDTool(props) {
     const priceMovements = average.map((item, index) =>
       index == 0 ? 0 : ((item - average[index - 1]) / average[index - 1]) * 100
     );
-    const BTDsavings = chartValuesInvest.map((item) => Number(amount));
+    // track the price movements that qualify as dips
     const tracker = chartValuesInvest.map((item, index) =>
       priceMovements[index] <= -dip ? 0 : 1
     );
+    const BTDsavings = chartValuesInvest.map((item) => Number(amount));
 
     BTDsavings.forEach((item, index, array) => {
       if (index < array.length - 1) {
@@ -193,7 +199,7 @@ function BTDTool(props) {
         <select
           id="basisBTD"
           className="select"
-          onChange={(e) => props.updateSearchCriteriaBTD(e.target.value)}
+          onChange={(e) => updateSearchCriteriaBTD(e.target.value)}
           defaultValue="BTD Basis"
         >
           <option id="searchType" key="placeholder" disabled value="BTD Basis">

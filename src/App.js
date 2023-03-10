@@ -57,19 +57,19 @@ function App() {
     document.querySelector("#dateTimeSelect").disabled = false;
   }
 
-  function updateSearchCriteriaDCA(selection) {
-    dataFetch(selection);
-    document.querySelector("#startPointDCA").disabled = false;
-  }
-  function updateSearchCriteriaBTD(selection) {
-    dataFetch(selection);
-    document.querySelector("#startPointBTD").disabled = false;
-  }
+  // function updateSearchCriteriaDCA(selection) {
+  //   dataFetch(selection);
+  //   document.querySelector("#startPointDCA").disabled = false;
+  // }
+  // function updateSearchCriteriaBTD(selection) {
+  //   dataFetch(selection);
+  //   document.querySelector("#startPointBTD").disabled = false;
+  // }
 
-  function updateSearchCriteriaYOLO(selection) {
-    dataFetch(selection);
-    document.querySelector("#startPointYOLO").disabled = false;
-  }
+  // function updateSearchCriteriaYOLO(selection) {
+  //   dataFetch(selection);
+  //   document.querySelector("#startPointYOLO").disabled = false;
+  // }
 
   //the current price displayed for reference for the explorer
   const [currentPrice, setCurrentPrice] = useState(0);
@@ -218,7 +218,7 @@ function App() {
           {panel === "DCATool" ? (
             <DCATool
               updateCurrency={updateCurrency}
-              updateSearchCriteriaDCA={updateSearchCriteriaDCA}
+              dataFetch={dataFetch}
               updatePrices={updatePrices}
               marker={marker}
               currentPrice={currentPrice}
@@ -229,7 +229,7 @@ function App() {
           ) : panel === "BTDTool" ? (
             <BTDTool
               updateCurrency={updateCurrency}
-              updateSearchCriteriaBTD={updateSearchCriteriaBTD}
+              dataFetch={dataFetch}
               updatePrices={updatePrices}
               marker={marker}
               currentPrice={currentPrice}
@@ -240,7 +240,7 @@ function App() {
           ) : panel === "YOLOTool" ? (
             <YOLOTool
               updateCurrency={updateCurrency}
-              updateSearchCriteriaYOLO={updateSearchCriteriaYOLO}
+              dataFetch={dataFetch}
               updatePrices={updatePrices}
               marker={marker}
               currentPrice={currentPrice}

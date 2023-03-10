@@ -8,6 +8,11 @@ function YOLOTool(props) {
   const [valid, setValid] = useState(true);
   const [chartData, setChartData] = useState();
 
+  function updateSearchCriteriaYOLO(selection) {
+    props.dataFetch(selection);
+    document.querySelector("#startPointYOLO").disabled = false;
+  }
+
   function updateAmount(value) {
     isNaN(value) ? setValid(false) : setValid(true);
     if (valid) setAmount(value);
@@ -166,7 +171,7 @@ function YOLOTool(props) {
         <select
           id="basisYOLO"
           className="select"
-          onChange={(e) => props.updateSearchCriteriaYOLO(e.target.value)}
+          onChange={(e) => updateSearchCriteriaYOLO(e.target.value)}
           defaultValue="Tracking Basis"
         >
           <option

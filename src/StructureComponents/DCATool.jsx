@@ -8,6 +8,11 @@ function DCATool(props) {
   const [valid, setValid] = useState(true);
   const [chartData, setChartData] = useState();
 
+  function updateSearchCriteriaDCA(selection) {
+    props.dataFetch(selection);
+    document.querySelector("#startPointDCA").disabled = false;
+  }
+
   function updateAmount(value) {
     isNaN(value) ? setValid(false) : setValid(true);
     if (valid) setAmount(value);
@@ -132,7 +137,7 @@ function DCATool(props) {
         <select
           id="basisDCA"
           className="select"
-          onChange={(e) => props.updateSearchCriteriaDCA(e.target.value)}
+          onChange={(e) => updateSearchCriteriaDCA(e.target.value)}
           defaultValue="DCA Basis"
         >
           <option id="searchType" key="placeholder" disabled value="DCA Basis">
