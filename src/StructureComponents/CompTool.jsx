@@ -23,7 +23,7 @@ function CompTool(props) {
     setDip(value);
   }
 
-  function calculateBTD() {
+  function calculateComp() {
     const data = Object.keys(props.priceData);
     const dataSelection = data.slice(0, data.indexOf(startDate) + 1).reverse();
 
@@ -45,8 +45,9 @@ function CompTool(props) {
     //chart data processing
     // calculate the accumulated investment at each interval
     const chartValuesInvest = lowPrices.map(
-      (item, index) => (index + 1) * amount
+      (item, index) => lowPrices.length * amount
     );
+
     //BTD - buy the dip - purchase amounts when the price dips by a certain amount
     // track price movements
     const priceMovements = average.map((item, index) =>
@@ -56,6 +57,8 @@ function CompTool(props) {
     const tracker = chartValuesInvest.map((item, index) =>
       priceMovements[index] <= -dip ? 0 : 1
     );
+
+    //the amount to spend on dips
     const BTDsavings = chartValuesInvest.map((item) => Number(amount));
 
     BTDsavings.forEach((item, index, array) => {
@@ -66,42 +69,79 @@ function CompTool(props) {
         }
       }
     });
-
+    //calculate the remaing investment yet to be deployed at each step for BTD strategy
+    const BTDinvestRemainder = [];
+    let BTDinvestRemainderTracker = chartValuesInvest[0];
+    BTDsavings.forEach((item) => {
+      BTDinvestRemainderTracker -= item;
+      BTDinvestRemainder.push(BTDinvestRemainderTracker);
+    });
+    //determine the buys at each step of BTD
     const buysBTD = lowPrices.map((item, index) =>
       BTDsavings[index]
         ? BTDsavings[index] /
           Math.floor((Number(item) + Number(highPrices[index])) / 2)
         : 0
     );
+    // a check for the last point in the array to determine if we are making a buy or not
     if (tracker[tracker.length - 1] == 1) buysBTD[buysBTD.length - 1] = 0;
-
+    //determine the cumulative amount bought over time
     const buysCumulativeBTD = [...buysBTD];
 
     buysCumulativeBTD.forEach((item, index, array) => {
       if (index < array.length - 1) array[index + 1] += item;
     });
-
+    //determine the value of the cumulative purchases at each time period
     const valueCumulativeBTD = buysCumulativeBTD.map(
       (item, index) => item * average[index]
     );
-
-    const cashBTD = [...tracker];
-
-    cashBTD.forEach((item, index, array) => {
-      if (index == 0) array[index] = Number(amount);
-      else if (index > 0 && tracker[index] == 1)
-        array[index] = array[index - 1] + Number(amount);
-      else array[index] = 0;
-    });
-
-    const investBTD = cashBTD.map(
+    // the total of the BTD strategy as the sum of the present value of holdings plus remaining investment cash
+    const investBTD = BTDinvestRemainder.map(
       (item, index) => item + valueCumulativeBTD[index]
+    );
+
+    console.log(valueCumulativeBTD, BTDinvestRemainder);
+
+    // YOLO - you only live once - an upfront all in investment
+    const yoloAmount =
+      chartValuesInvest[chartValuesInvest.length - 1] / average[0];
+    // The amount
+    const yoloInvest = average.map((item) => Math.floor(item * yoloAmount));
+
+    //DCA - Dollar cost averaging
+    const buysDCA = lowPrices.map(
+      (item, index) =>
+        amount / Math.floor((Number(item) + Number(highPrices[index])) / 2)
+    );
+    //determine how much was accumulated by each interval based on the sum of current plus previous intervals
+    const accumulatedDCA = buysDCA.map((item, index) =>
+      buysDCA.slice(0, index + 1).reduce((a, b) => a + b, 0)
+    );
+
+    // calculate the accumulated investment at each interval
+    const DCAinvestRemainder = lowPrices.map(
+      (item, index) => amount * lowPrices.length - (index + 1) * amount
+    );
+
+    //multiply the current accumulated volume at each interval by the average price at each interval plus the remaining investment
+    const chartValuesDCA = accumulatedDCA.map(
+      (item, index) =>
+        (item *
+          Math.floor(Number(lowPrices[index]) + Number(highPrices[index]))) /
+          2 +
+        DCAinvestRemainder[index]
     );
 
     //set the chart data using the values
     setChartData({
       labels: dataSelection,
       datasets: [
+        {
+          label: "DCA Present Value",
+          data: chartValuesDCA,
+          borderColor: "black",
+          borderWidth: 2,
+        },
         {
           label: "BTD",
           data: investBTD,
@@ -112,6 +152,12 @@ function CompTool(props) {
           label: "Invested Amount",
           data: chartValuesInvest,
           borderColor: "grey",
+          borderWidth: 2,
+        },
+        {
+          label: "YOLO",
+          data: yoloInvest,
+          borderColor: "red",
           borderWidth: 2,
         },
         {
@@ -198,10 +244,10 @@ function CompTool(props) {
           id="basisBTD"
           className="select"
           onChange={(e) => updateSearchCriteriaBTD(e.target.value)}
-          defaultValue="BTD Basis"
+          defaultValue="Basis"
         >
-          <option id="searchType" key="placeholder" disabled value="BTD Basis">
-            BTD Basis
+          <option id="searchType" key="placeholder" disabled value="Basis">
+            Basis
           </option>
           <option id="searchType" key="day" value="Daily">
             Daily
@@ -231,7 +277,7 @@ function CompTool(props) {
           className="Calculate"
           type="button"
           value="Calculate"
-          onClick={calculateBTD}
+          onClick={calculateComp}
         >
           Calculate
         </button>
