@@ -9,9 +9,9 @@ function CompTool(props) {
   const [chartData, setChartData] = useState();
   const [dip, setDip] = useState(5);
 
-  function updateSearchCriteriaBTD(selection) {
+  function updateSearchCriteriaComp(selection) {
     props.dataFetch(selection);
-    document.querySelector("#startPointBTD").disabled = false;
+    document.querySelector("#startPointComp").disabled = false;
   }
 
   function updateAmount(value) {
@@ -26,6 +26,10 @@ function CompTool(props) {
   function calculateComp() {
     const data = Object.keys(props.priceData);
     const dataSelection = data.slice(0, data.indexOf(startDate) + 1).reverse();
+    if (
+      ["Weekly", "Monthly"].includes(document.querySelector("#basisComp").value)
+    )
+      dataSelection.pop();
 
     //gather all the high prices
     const highPrices = dataSelection.map(
@@ -241,9 +245,9 @@ function CompTool(props) {
           )}
         </div>
         <select
-          id="basisBTD"
+          id="basisComp"
           className="select"
-          onChange={(e) => updateSearchCriteriaBTD(e.target.value)}
+          onChange={(e) => updateSearchCriteriaComp(e.target.value)}
           defaultValue="Basis"
         >
           <option id="searchType" key="placeholder" disabled value="Basis">
@@ -261,7 +265,7 @@ function CompTool(props) {
         </select>
         <select
           className="select"
-          id="startPointBTD"
+          id="startPointComp"
           disabled
           onChange={(e) => setStartDate(e.target.value)}
           defaultValue="Start Date"
