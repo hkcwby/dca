@@ -115,8 +115,13 @@
   font-size: x-small;
 }
 
-.chart-container {
+.Chart-container {
   display: inline-block;
   position: relative;
   width: 100%;
+}
+
+.Explanation-text {
+  font-size: 0.875em;
+  color: rgb(35, 179, 223);
 }

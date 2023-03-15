@@ -5,7 +5,6 @@ import LineChart from "./LineChart";
 function CompTool(props) {
   const [amount, setAmount] = useState(0);
   const [startDate, setStartDate] = useState("");
-  const [moneyInvested, setMoneyInvested] = useState(0);
   const [valid, setValid] = useState(true);
   const [chartData, setChartData] = useState();
   const [dip, setDip] = useState(5);
@@ -141,6 +140,13 @@ function CompTool(props) {
       labels: dataSelection,
       datasets: [
         {
+          label: "Invested Amount",
+          data: chartValuesInvest,
+          borderColor: "grey",
+          borderWidth: 2,
+          pointStyle: false,
+        },
+        {
           label: "DCA Present Value",
           data: chartValuesDCA,
           borderColor: "black",
@@ -151,13 +157,6 @@ function CompTool(props) {
           label: "BTD",
           data: investBTD,
           borderColor: "green",
-          borderWidth: 2,
-          pointStyle: false,
-        },
-        {
-          label: "Invested Amount",
-          data: chartValuesInvest,
-          borderColor: "grey",
           borderWidth: 2,
           pointStyle: false,
         },
@@ -178,9 +177,6 @@ function CompTool(props) {
         },
       ],
     });
-
-    //the total invested amount
-    setMoneyInvested(amount * average.length);
   }
 
   return (
@@ -292,24 +288,71 @@ function CompTool(props) {
         </button>
       </div>
       <div className="panel-display">
-        {chartData ? <LineChart chartData={chartData} /> : <></>}
-        <div>
-          <div className="Summary">Summary</div>
-          <div>
-            Funds Invested: {props.marker}
-            {moneyInvested ? moneyInvested : "-"}
-          </div>
-          <div>
-            Present Value: {props.marker}
-            {chartData
-              ? Math.floor(
+        {chartData ? (
+          <>
+            <LineChart chartData={chartData} />
+            <div>
+              <div className="Summary">Summary</div>
+              <div>
+                Funds Invested: {props.marker}
+                {Math.floor(
                   chartData.datasets[0].data[
                     chartData.datasets[0].data.length - 1
                   ]
-                )
-              : "-"}
+                )}
+              </div>
+              <div>
+                PV DCA: {props.marker}
+                {Math.floor(
+                  chartData.datasets[0].data[
+                    chartData.datasets[0].data.length - 1
+                  ]
+                )}
+              </div>
+              <div>
+                PV BTD: {props.marker}
+                {Math.floor(
+                  chartData.datasets[2].data[
+                    chartData.datasets[2].data.length - 1
+                  ]
+                )}
+              </div>
+              <div>
+                PV YOLO: {props.marker}
+                {Math.floor(
+                  chartData.datasets[3].data[
+                    chartData.datasets[3].data.length - 1
+                  ]
+                )}
+              </div>
+            </div>{" "}
+          </>
+        ) : (
+          <div>
+            <p className="Explanation-main">
+              This tool is designed to compare the various strategies assuming
+              an equal starting investment.
+            </p>
+            <p className="Explanation-text">
+              In this example all the investment is spent at the start with the
+              YOLO strategy.
+            </p>
+            <p className="Explanation-text">
+              The investment is split into equal portions invested at each
+              period for the DCA strategy.
+            </p>
+            <p className="Explanation-text">
+              The investment is split similar to the DCA strategy for the BTD
+              strategy but only invested when the dip threshold is met.
+            </p>
+            <p className="Explanation-text">
+              Both the DCA and BTD strategies represent the present value of
+              Bitcoin purchased to date plus the remaining funds yet to be
+              invested, such that there is a fair measure to the YOLO result in
+              each period.
+            </p>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
