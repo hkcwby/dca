@@ -27,6 +27,11 @@ function BTDTool(props) {
     const data = Object.keys(props.priceData);
     const dataSelection = data.slice(0, data.indexOf(startDate) + 1).reverse();
 
+    if (
+      ["Weekly", "Monthly"].includes(document.querySelector("#basisComp").value)
+    )
+      dataSelection.pop();
+
     //gather all the high prices
     const highPrices = dataSelection.map(
       (date) => props.priceData[date][`2a. high (${props.currency})`]
