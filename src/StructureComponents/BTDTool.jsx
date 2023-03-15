@@ -27,10 +27,8 @@ function BTDTool(props) {
     const data = Object.keys(props.priceData);
     const dataSelection = data.slice(0, data.indexOf(startDate) + 1).reverse();
 
-    if (
-      ["Weekly", "Monthly"].includes(document.querySelector("#basisComp").value)
-    )
-      dataSelection.pop();
+    //remove the present days data which is often incomplete and skews charts data
+    dataSelection.pop();
 
     //gather all the high prices
     const highPrices = dataSelection.map(
@@ -112,18 +110,21 @@ function BTDTool(props) {
           data: investBTD,
           borderColor: "green",
           borderWidth: 2,
+          pointStyle: false,
         },
         {
           label: "Invested Amount",
           data: chartValuesInvest,
           borderColor: "grey",
           borderWidth: 2,
+          pointStyle: false,
         },
         {
           label: "BTC Price",
           data: average,
           borderColor: "orange",
           borderWidth: 2,
+          pointStyle: false,
           hidden: true,
         },
       ],

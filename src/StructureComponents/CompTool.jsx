@@ -1,3 +1,4 @@
+import { isLabelWithInternallyDisabledControl } from "@testing-library/user-event/dist/utils";
 import { useState } from "react";
 import LineChart from "./LineChart";
 
@@ -26,10 +27,9 @@ function CompTool(props) {
   function calculateComp() {
     const data = Object.keys(props.priceData);
     const dataSelection = data.slice(0, data.indexOf(startDate) + 1).reverse();
-    if (
-      ["Weekly", "Monthly"].includes(document.querySelector("#basisComp").value)
-    )
-      dataSelection.pop();
+
+    //remove the present days data which is often incomplete and skews charts data
+    dataSelection.pop();
 
     //gather all the high prices
     const highPrices = dataSelection.map(
@@ -145,30 +145,35 @@ function CompTool(props) {
           data: chartValuesDCA,
           borderColor: "black",
           borderWidth: 2,
+          pointStyle: false,
         },
         {
           label: "BTD",
           data: investBTD,
           borderColor: "green",
           borderWidth: 2,
+          pointStyle: false,
         },
         {
           label: "Invested Amount",
           data: chartValuesInvest,
           borderColor: "grey",
           borderWidth: 2,
+          pointStyle: false,
         },
         {
           label: "YOLO",
           data: yoloInvest,
           borderColor: "red",
           borderWidth: 2,
+          pointStyle: false,
         },
         {
           label: "BTC Price",
           data: average,
           borderColor: "orange",
           borderWidth: 2,
+          pointStyle: false,
           hidden: true,
         },
       ],
