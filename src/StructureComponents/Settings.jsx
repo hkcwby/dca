@@ -3,6 +3,14 @@ function Settings(props) {
     <>
       <div className="Feature-tab">
         <p>Simple modifactions you can make to improve performance.</p>
+        <a
+          className="App-link"
+          href="https://www.alphavantage.co/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Check out the API here
+        </a>
         <p>
           The Api Key is has call limitations, insert your own API Key for
           better access. You can create your own API Key for free at:

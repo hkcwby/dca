@@ -103,8 +103,6 @@ function CompTool(props) {
       (item, index) => item + valueCumulativeBTD[index]
     );
 
-    console.log(valueCumulativeBTD, BTDinvestRemainder);
-
     // YOLO - you only live once - an upfront all in investment
     const yoloAmount =
       chartValuesInvest[chartValuesInvest.length - 1] / average[0];
@@ -304,8 +302,8 @@ function CompTool(props) {
               <div>
                 PV DCA: {props.marker}
                 {Math.floor(
-                  chartData.datasets[0].data[
-                    chartData.datasets[0].data.length - 1
+                  chartData.datasets[1].data[
+                    chartData.datasets[1].data.length - 1
                   ]
                 )}
               </div>
@@ -333,24 +331,26 @@ function CompTool(props) {
               This tool is designed to compare the various strategies assuming
               an equal starting investment.
             </p>
-            <p className="Explanation-text">
-              In this example all the investment is spent at the start with the
-              YOLO strategy.
-            </p>
-            <p className="Explanation-text">
-              The investment is split into equal portions invested at each
-              period for the DCA strategy.
-            </p>
-            <p className="Explanation-text">
-              The investment is split similar to the DCA strategy for the BTD
-              strategy but only invested when the dip threshold is met.
-            </p>
-            <p className="Explanation-text">
-              Both the DCA and BTD strategies represent the present value of
-              Bitcoin purchased to date plus the remaining funds yet to be
-              invested, such that there is a fair measure to the YOLO result in
-              each period.
-            </p>
+            <ul>
+              <li className="Explanation-text">
+                In this example all the investment is spent at the start with
+                the YOLO strategy.
+              </li>
+              <li className="Explanation-text">
+                The investment is split into equal portions invested at each
+                period for the DCA strategy.
+              </li>
+              <li className="Explanation-text">
+                The investment is split similar to the DCA strategy for the BTD
+                strategy but only invested when the dip threshold is met.
+              </li>
+              <li className="Explanation-text">
+                Both the DCA and BTD strategies represent the present value of
+                Bitcoin purchased to date plus the remaining funds yet to be
+                invested, such that there is a fair measure to the YOLO result
+                in each period.
+              </li>
+            </ul>
           </div>
         )}
       </div>

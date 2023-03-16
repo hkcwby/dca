@@ -93,6 +93,7 @@ function DCATool(props) {
 
     //the total invested amount
     setMoneyInvested(amount * average.length);
+    console.log(chartValuesDCA, chartValuesInvest);
   }
 
   return (

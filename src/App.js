@@ -320,15 +320,6 @@ function App() {
             </div>
           </div>
         </div>
-
-        <a
-          className="App-link"
-          href="https://www.alphavantage.co/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Check out the API here
-        </a>
       </div>
     </div>
   );

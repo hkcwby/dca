@@ -5,7 +5,7 @@ Chart.register(...registerables);
 
 function LineChart({ chartData }) {
   return (
-    <div className="chart-container">
+    <div className="Chart-container">
       {/* <h2 style={{ textAlign: "center" }}>Results:</h2> */}
       <Line
         data={chartData}
