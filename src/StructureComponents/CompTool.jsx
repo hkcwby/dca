@@ -7,11 +7,16 @@ function CompTool(props) {
   const [startDate, setStartDate] = useState("");
   const [valid, setValid] = useState(true);
   const [chartData, setChartData] = useState();
+  const [results, setResults] = useState(false);
   const [dip, setDip] = useState(5);
 
   function updateSearchCriteriaComp(selection) {
     props.dataFetch(selection);
     document.querySelector("#startPointComp").disabled = false;
+  }
+
+  function resultsToggle() {
+    setResults(!results);
   }
 
   function updateAmount(value) {
@@ -175,12 +180,13 @@ function CompTool(props) {
         },
       ],
     });
+    setResults(true);
   }
 
   return (
     <div className="Feature-tab">
       <div className="Summary">Strategy Compare (DCA vs BTD vs YOLO)</div>
-      <div>
+      <div className="controls">
         <select
           id="currencyBTD"
           className="select"
@@ -243,50 +249,59 @@ function CompTool(props) {
             <p className="Failed-validation">Please Enter a Number</p>
           )}
         </div>
-        <select
-          id="basisComp"
-          className="select"
-          onChange={(e) => updateSearchCriteriaComp(e.target.value)}
-          defaultValue="Basis"
-        >
-          <option id="searchType" key="placeholder" disabled value="Basis">
-            Basis
-          </option>
-          <option id="searchType" key="day" value="Daily">
-            Daily
-          </option>
-          <option id="searchType" key="week" value="Weekly">
-            Weekly
-          </option>
-          <option id="searchType" key="month" value="Monthly">
-            Monthly
-          </option>
-        </select>
-        <select
-          className="select"
-          id="startPointComp"
-          disabled
-          onChange={(e) => setStartDate(e.target.value)}
-          defaultValue="Start Date"
-        >
-          <option key="timePeriod" defaultValue hidden value="Start Date">
-            Start Date
-          </option>
-          {props.menuValues.map((value) => (
-            <option key={value}>{value}</option>
-          ))}
-        </select>
-        <button
-          className="Calculate"
-          type="button"
-          value="Calculate"
-          onClick={calculateComp}
-        >
-          Calculate
-        </button>
+        <div>
+          <select
+            id="basisComp"
+            className="select"
+            onChange={(e) => updateSearchCriteriaComp(e.target.value)}
+            defaultValue="Basis"
+          >
+            <option id="searchType" key="placeholder" disabled value="Basis">
+              Basis
+            </option>
+            <option id="searchType" key="day" value="Daily">
+              Daily
+            </option>
+            <option id="searchType" key="week" value="Weekly">
+              Weekly
+            </option>
+            <option id="searchType" key="month" value="Monthly">
+              Monthly
+            </option>
+          </select>
+          <select
+            className="select"
+            id="startPointComp"
+            disabled
+            onChange={(e) => setStartDate(e.target.value)}
+            defaultValue="Start Date"
+          >
+            <option key="timePeriod" defaultValue hidden value="Start Date">
+              Start Date
+            </option>
+            {props.menuValues.map((value) => (
+              <option key={value}>{value}</option>
+            ))}
+          </select>
+          <button
+            className="Calculate"
+            type="button"
+            value="Calculate"
+            onClick={calculateComp}
+          >
+            Calculate
+          </button>
+        </div>
       </div>
-      <div className="panel-display">
-        {chartData ? (
+      <div className="panel-display instructions">
+        <div className="info-data-toggle">
+          {chartData ? (
+            <p onClick={resultsToggle}>{results ? "info" : "results"}</p>
+          ) : (
+            <></>
+          )}
+        </div>
+        {results ? (
           <>
             <LineChart chartData={chartData} />
             <div>
@@ -326,7 +341,7 @@ function CompTool(props) {
             </div>{" "}
           </>
         ) : (
-          <div>
+          <>
             <p className="Explanation-main">
               This tool is designed to compare the various strategies assuming
               an equal starting investment.
@@ -351,7 +366,7 @@ function CompTool(props) {
                 in each period.
               </li>
             </ul>
-          </div>
+          </>
         )}
       </div>
     </div>

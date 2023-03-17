@@ -56,9 +56,11 @@
   border-radius: 8px;
   border-style: solid;
   min-height: 50vh;
-  min-width: 30vw;
+  min-width: 40vw;
   font-size: smaller;
-  margin: 2vh;
+  margin-bottom: 2vh;
+  margin-left: 5vw;
+  margin-right: 5vw;
 }
 
 .Price-explorer-panel {
@@ -125,4 +127,12 @@
 .Explanation-text {
   font-size: 0.875em;
   color: rgb(35, 179, 223);
+}
+
+.info-data-toggle {
+  font-size: 0.5em;
+  color: rgb(35, 179, 223);
+  display: flex;
+  justify-content: flex-start;
+  width: 90%;
 }
