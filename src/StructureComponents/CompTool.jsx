@@ -107,7 +107,7 @@ function CompTool(props) {
     const investBTD = BTDinvestRemainder.map(
       (item, index) => item + valueCumulativeBTD[index]
     );
-
+    console.log(investBTD, valueCumulativeBTD, BTDinvestRemainder);
     // YOLO - you only live once - an upfront all in investment
     const yoloAmount =
       chartValuesInvest[chartValuesInvest.length - 1] / average[0];
