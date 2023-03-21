@@ -67,27 +67,29 @@ function CompTool(props) {
     );
 
     //the amount to spend on dips
-    const BTDsavings = chartValuesInvest.map((item) => Number(amount));
+    const BTDspend = chartValuesInvest.map((item) => Number(amount));
 
-    BTDsavings.forEach((item, index, array) => {
+    BTDspend.forEach((item, index, array) => {
       if (index < array.length - 1) {
         if (tracker[index] == 1) {
           array[index + 1] += array[index];
           array[index] = 0;
         }
+      } else {
+        if (tracker[index] == 1) array[index] = 0;
       }
     });
     //calculate the remaing investment yet to be deployed at each step for BTD strategy
     const BTDinvestRemainder = [];
     let BTDinvestRemainderTracker = chartValuesInvest[0];
-    BTDsavings.forEach((item) => {
+    BTDspend.forEach((item) => {
       BTDinvestRemainderTracker -= item;
       BTDinvestRemainder.push(BTDinvestRemainderTracker);
     });
     //determine the buys at each step of BTD
     const buysBTD = lowPrices.map((item, index) =>
-      BTDsavings[index]
-        ? BTDsavings[index] /
+      BTDspend[index]
+        ? BTDspend[index] /
           Math.floor((Number(item) + Number(highPrices[index])) / 2)
         : 0
     );
@@ -107,7 +109,6 @@ function CompTool(props) {
     const investBTD = BTDinvestRemainder.map(
       (item, index) => item + valueCumulativeBTD[index]
     );
-    console.log(investBTD, valueCumulativeBTD, BTDinvestRemainder);
     // YOLO - you only live once - an upfront all in investment
     const yoloAmount =
       chartValuesInvest[chartValuesInvest.length - 1] / average[0];
