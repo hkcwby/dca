@@ -7,6 +7,11 @@ function YOLOTool(props) {
   const [moneyInvested, setMoneyInvested] = useState(0);
   const [valid, setValid] = useState(true);
   const [chartData, setChartData] = useState();
+  const [results, setResults] = useState(false);
+
+  function resultsToggle() {
+    setResults(!results);
+  }
 
   function updateSearchCriteriaYOLO(selection) {
     props.dataFetch(selection);
@@ -69,11 +74,21 @@ function YOLOTool(props) {
           borderWidth: 2,
           pointStyle: false,
         },
+        {
+          label: "BTC Price",
+          data: average,
+          borderColor: "orange",
+          borderWidth: 2,
+          hidden: true,
+          pointStyle: false,
+        },
       ],
     });
 
     //the total invested amount
     setMoneyInvested(amount * average.length);
+    //toggle the display of results
+    setResults(true);
   }
 
   return (
@@ -169,24 +184,62 @@ function YOLOTool(props) {
         </button>
       </div>
       <div className="panel-display">
-        {chartData ? <LineChart chartData={chartData} /> : <></>}
-        <div>
-          <div className="Summary">Summary</div>
-          <div>
-            Funds Invested: {props.marker}
-            {moneyInvested ? moneyInvested : "-"}
-          </div>
-          <div>
-            Present Value: {props.marker}
-            {chartData
-              ? Math.floor(
-                  chartData.datasets[0].data[
-                    chartData.datasets[0].data.length - 1
-                  ]
-                )
-              : "-"}
-          </div>
+        <div className="info-data-toggle">
+          {chartData ? (
+            <p onClick={resultsToggle}>{results ? "info" : "results"}</p>
+          ) : (
+            <></>
+          )}
         </div>
+        {results ? (
+          <>
+            <LineChart chartData={chartData} />
+            <div>
+              <div className="Summary">Summary</div>
+              <div>
+                Funds Invested: {props.marker}
+                {moneyInvested ? moneyInvested : "-"}
+              </div>
+              <div>
+                Present Value: {props.marker}
+                {chartData
+                  ? Math.floor(
+                      chartData.datasets[0].data[
+                        chartData.datasets[0].data.length - 1
+                      ]
+                    )
+                  : "-"}
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="Explanation-main">
+              This tool is designed to demonstrate the effect of investing using
+              an all or in or "You Only Live Once" (YOLO) strategy.
+            </p>
+            <ul>
+              <li className="Explanation-text">
+                YOLO is another popular strategy advertised on social media
+                where you take all your existing savings or even borrow to go
+                "all in" with the expectation that prospects are just too good.
+              </li>
+              <li className="Explanation-text">
+                This method can yield very good or very bad results depending on
+                your investment time horizon and ultimately has a lot of
+                volatility that most investors might find unpalatable.
+              </li>
+              <li className="Explanation-text">
+                Select an amount to invest and then a frequency of
+                daily/weekly/monthly finally select a start date.
+              </li>
+              <li className="Explanation-text">
+                The tool assumes you purchase BTC equivelent of the investment
+                amount and then tracks its value in currency at each interval.
+              </li>
+            </ul>
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-import { isLabelWithInternallyDisabledControl } from "@testing-library/user-event/dist/utils";
 import { useState } from "react";
 import LineChart from "./LineChart";
 
@@ -8,7 +7,7 @@ function CompTool(props) {
   const [valid, setValid] = useState(true);
   const [chartData, setChartData] = useState();
   const [results, setResults] = useState(false);
-  const [dip, setDip] = useState(5);
+  const [dip, setDip] = useState(3);
 
   function updateSearchCriteriaComp(selection) {
     props.dataFetch(selection);
@@ -109,6 +108,7 @@ function CompTool(props) {
     const investBTD = BTDinvestRemainder.map(
       (item, index) => item + valueCumulativeBTD[index]
     );
+
     // YOLO - you only live once - an upfront all in investment
     const yoloAmount =
       chartValuesInvest[chartValuesInvest.length - 1] / average[0];
@@ -228,15 +228,15 @@ function CompTool(props) {
             id="dipBTD"
             // disabled
             onChange={(e) => updateDipAmount(e.target.value)}
-            defaultValue="Dip % (default 5%)"
+            // defaultValue="Dip % (default 3%)"
           >
             <option
               key="dipPercent"
-              defaultValue
+              //defaultValue
               hidden
-              value="Dip % (default 5%)"
+              // value="Dip % (default 3%)"
             >
-              Dip % (default 5%)
+              Dip % (default 3%)
             </option>
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(
               (value) => (
@@ -306,9 +306,8 @@ function CompTool(props) {
           <>
             <LineChart chartData={chartData} />
             <div>
-              <div className="Summary">Summary</div>
               <div>
-                Funds Invested: {props.marker}
+                Invested: {props.marker}
                 {Math.floor(
                   chartData.datasets[0].data[
                     chartData.datasets[0].data.length - 1

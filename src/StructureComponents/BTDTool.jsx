@@ -7,7 +7,12 @@ function BTDTool(props) {
   const [moneyInvested, setMoneyInvested] = useState(0);
   const [valid, setValid] = useState(true);
   const [chartData, setChartData] = useState();
-  const [dip, setDip] = useState(5);
+  const [dip, setDip] = useState(3);
+  const [results, setResults] = useState(false);
+
+  function resultsToggle() {
+    setResults(!results);
+  }
 
   function updateSearchCriteriaBTD(selection) {
     props.dataFetch(selection);
@@ -132,6 +137,8 @@ function BTDTool(props) {
 
     //the total invested amount
     setMoneyInvested(amount * average.length);
+    //toggle the display of results
+    setResults(true);
   }
 
   return (
@@ -178,15 +185,15 @@ function BTDTool(props) {
             id="dipBTD"
             // disabled
             onChange={(e) => updateDipAmount(e.target.value)}
-            defaultValue="Dip % (default 5%)"
+            defaultValue="Dip % (default 3%)"
           >
             <option
               key="dipPercent"
               defaultValue
               hidden
-              value="Dip % (default 5%)"
+              value="Dip % (default 3%)"
             >
-              Dip % (default 5%)
+              Dip % (default 3%)
             </option>
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(
               (value) => (
@@ -243,24 +250,57 @@ function BTDTool(props) {
         </button>
       </div>
       <div className="panel-display">
-        {chartData ? <LineChart chartData={chartData} /> : <></>}
-        <div>
-          <div className="Summary">Summary</div>
-          <div>
-            Funds Invested: {props.marker}
-            {moneyInvested ? moneyInvested : "-"}
-          </div>
-          <div>
-            Present Value: {props.marker}
-            {chartData
-              ? Math.floor(
-                  chartData.datasets[0].data[
-                    chartData.datasets[0].data.length - 1
-                  ]
-                )
-              : "-"}
-          </div>
+        <div className="info-data-toggle">
+          {chartData ? (
+            <p onClick={resultsToggle}>{results ? "info" : "results"}</p>
+          ) : (
+            <></>
+          )}
         </div>
+        {results ? (
+          <>
+            <LineChart chartData={chartData} />
+            <div>
+              <div className="Summary">Summary</div>
+              <div>
+                Funds Invested: {props.marker}
+                {moneyInvested ? moneyInvested : "-"}
+              </div>
+              <div>
+                Present Value: {props.marker}
+                {chartData
+                  ? Math.floor(
+                      chartData.datasets[0].data[
+                        chartData.datasets[0].data.length - 1
+                      ]
+                    )
+                  : "-"}
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="Explanation-main">
+              This tool is designed to demonstrate the effect of investing using
+              a buy the dip (BTD) approach.
+            </p>
+            <ul>
+              <li className="Explanation-text">
+                Buy the dip is a strategy popularised online. Essentially you
+                hold onto your savings and make purchases when the prices drop
+                significantly.
+              </li>
+              <li className="Explanation-text">
+                Select an amount to invest and then a frequency of
+                daily/weekly/monthly finally select a start date.
+              </li>
+              <li className="Explanation-text">
+                The tool will accrue your money at interval and deploy to
+                purchase BTC when the dip threshold is satisfied.
+              </li>
+            </ul>
+          </>
+        )}
       </div>
     </div>
   );
