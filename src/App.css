@@ -55,8 +55,8 @@
   border-color: lightgrey;
   border-radius: 8px;
   border-style: solid;
-  min-height: 50vh;
-  min-width: 40vw;
+  min-height: 80%;
+  min-width: 80%;
   font-size: smaller;
   margin-bottom: 2vh;
   margin-left: 5vw;
@@ -76,7 +76,7 @@
   margin-top: auto;
   display: flex;
   flex-direction: row;
-  min-width: 50vw;
+  width: 100%;
 }
 
 .Menu-option {
@@ -85,6 +85,10 @@
   border-style: solid;
   border-width: 8px;
   color: lightgrey;
+  white-space: nowrap;
+  font-size: 0.5em;
+  text-overflow: ellipsis;
+  max-width: 16%;
 }
 
 .Summary {
