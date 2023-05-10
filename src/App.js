@@ -1,13 +1,21 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import axios from "./AxiosSetup";
+import Loading from "./StructureComponents/Loading";
 import PriceExplorer from "./StructureComponents/PriceExplorer";
-import DCATool from "./StructureComponents/DCATool";
-import BTDTool from "./StructureComponents/BTDTool";
-import YOLOTool from "./StructureComponents/YOLOTool";
-import Settings from "./StructureComponents/Settings";
-import DayAnalysis from "./StructureComponents/DayAnalysis";
-import CompTool from "./StructureComponents/CompTool";
+// import DCATool from "./StructureComponents/DCATool";
+// import BTDTool from "./StructureComponents/BTDTool";
+// import YOLOTool from "./StructureComponents/YOLOTool";
+// import Settings from "./StructureComponents/Settings";
+// import DayAnalysis from "./StructureComponents/DayAnalysis";
+// import CompTool from "./StructureComponents/CompTool";
+
+const DCATool = lazy(() => import("./StructureComponents/DCATool"));
+const BTDTool = lazy(() => import("./StructureComponents/BTDTool"));
+const YOLOTool = lazy(() => import("./StructureComponents/YOLOTool"));
+const Settings = lazy(() => import("./StructureComponents/Settings"));
+const DayAnalysis = lazy(() => import("./StructureComponents/DayAnalysis"));
+const CompTool = lazy(() => import("./StructureComponents/CompTool"));
 
 function App() {
   //setting up reference API Key
@@ -201,125 +209,127 @@ function App() {
     <div className="App">
       <div className="App-body">
         <p>A fun little application exploring the Alpha Vantage API</p>
-        <div className="Frame">
-          {panel === "DCATool" ? (
-            <DCATool
-              updateCurrency={updateCurrency}
-              dataFetch={dataFetch}
-              updatePrices={updatePrices}
-              marker={marker}
-              currentPrice={currentPrice}
-              menuValues={menuValues}
-              priceData={priceData}
-              currency={currency}
-            />
-          ) : panel === "BTDTool" ? (
-            <BTDTool
-              updateCurrency={updateCurrency}
-              dataFetch={dataFetch}
-              updatePrices={updatePrices}
-              marker={marker}
-              currentPrice={currentPrice}
-              menuValues={menuValues}
-              priceData={priceData}
-              currency={currency}
-            />
-          ) : panel === "YOLOTool" ? (
-            <YOLOTool
-              updateCurrency={updateCurrency}
-              dataFetch={dataFetch}
-              updatePrices={updatePrices}
-              marker={marker}
-              currentPrice={currentPrice}
-              menuValues={menuValues}
-              priceData={priceData}
-              currency={currency}
-            />
-          ) : panel === "CompTool" ? (
-            <CompTool
-              updateCurrency={updateCurrency}
-              dataFetch={dataFetch}
-              updatePrices={updatePrices}
-              marker={marker}
-              currentPrice={currentPrice}
-              menuValues={menuValues}
-              priceData={priceData}
-              currency={currency}
-            />
-          ) : panel === "PriceExplorer" ? (
-            <PriceExplorer
-              updateCurrency={updateCurrency}
-              dataFetch={dataFetch}
-              updatePrices={updatePrices}
-              loading={loading}
-              prices={prices}
-              marker={marker}
-              currentPrice={currentPrice}
-              currency={currency}
-              menuValues={menuValues}
-            />
-          ) : panel === "Settings" ? (
-            <Settings updateAPIKEY={updateAPIKEY} />
-          ) : (
-            <DayAnalysis
-              apiKey={apiKey}
-              userAPIKey={userAPIKey}
-              currency={currency}
-            />
-          )}
-          <div className="Menu-bar">
-            <div
-              className="Menu-option Menu-selected"
-              id="Price-explorer-tag"
-              onClick={selectPriceExplorer}
-            >
-              Price Explorer
-            </div>
-            <div
-              className="Menu-option"
-              id="DCA-tool-tag"
-              onClick={selectDCATool}
-            >
-              DCA
-            </div>
-            <div
-              className="Menu-option"
-              id="BTD-tool-tag"
-              onClick={selectBTDTool}
-            >
-              BTD
-            </div>
-            <div
-              className="Menu-option"
-              id="YOLO-tool-tag"
-              onClick={selectYOLOTool}
-            >
-              YOLO
-            </div>
-            <div
-              className="Menu-option"
-              id="Comp-tool-tag"
-              onClick={selectCompTool}
-            >
-              Compare
-            </div>
+        <Suspense fallback={<Loading />}>
+          <div className="Frame">
+            {panel === "DCATool" ? (
+              <DCATool
+                updateCurrency={updateCurrency}
+                dataFetch={dataFetch}
+                updatePrices={updatePrices}
+                marker={marker}
+                currentPrice={currentPrice}
+                menuValues={menuValues}
+                priceData={priceData}
+                currency={currency}
+              />
+            ) : panel === "BTDTool" ? (
+              <BTDTool
+                updateCurrency={updateCurrency}
+                dataFetch={dataFetch}
+                updatePrices={updatePrices}
+                marker={marker}
+                currentPrice={currentPrice}
+                menuValues={menuValues}
+                priceData={priceData}
+                currency={currency}
+              />
+            ) : panel === "YOLOTool" ? (
+              <YOLOTool
+                updateCurrency={updateCurrency}
+                dataFetch={dataFetch}
+                updatePrices={updatePrices}
+                marker={marker}
+                currentPrice={currentPrice}
+                menuValues={menuValues}
+                priceData={priceData}
+                currency={currency}
+              />
+            ) : panel === "CompTool" ? (
+              <CompTool
+                updateCurrency={updateCurrency}
+                dataFetch={dataFetch}
+                updatePrices={updatePrices}
+                marker={marker}
+                currentPrice={currentPrice}
+                menuValues={menuValues}
+                priceData={priceData}
+                currency={currency}
+              />
+            ) : panel === "PriceExplorer" ? (
+              <PriceExplorer
+                updateCurrency={updateCurrency}
+                dataFetch={dataFetch}
+                updatePrices={updatePrices}
+                loading={loading}
+                prices={prices}
+                marker={marker}
+                currentPrice={currentPrice}
+                currency={currency}
+                menuValues={menuValues}
+              />
+            ) : panel === "Settings" ? (
+              <Settings updateAPIKEY={updateAPIKEY} />
+            ) : (
+              <DayAnalysis
+                apiKey={apiKey}
+                userAPIKey={userAPIKey}
+                currency={currency}
+              />
+            )}
+            <div className="Menu-bar">
+              <div
+                className="Menu-option Menu-selected"
+                id="Price-explorer-tag"
+                onClick={selectPriceExplorer}
+              >
+                Price Explorer
+              </div>
+              <div
+                className="Menu-option"
+                id="DCA-tool-tag"
+                onClick={selectDCATool}
+              >
+                DCA
+              </div>
+              <div
+                className="Menu-option"
+                id="BTD-tool-tag"
+                onClick={selectBTDTool}
+              >
+                BTD
+              </div>
+              <div
+                className="Menu-option"
+                id="YOLO-tool-tag"
+                onClick={selectYOLOTool}
+              >
+                YOLO
+              </div>
+              <div
+                className="Menu-option"
+                id="Comp-tool-tag"
+                onClick={selectCompTool}
+              >
+                Compare
+              </div>
 
-            <div
-              className="Menu-option"
-              id="Day-analysis-tag"
-              onClick={selectDayAnalysis}
-            >
-              Day Analysis
-            </div>
-            <div
-              className="Menu-option"
-              id="Settings-tag"
-              onClick={selectSettings}
-            >
-              Settings
+              <div
+                className="Menu-option"
+                id="Day-analysis-tag"
+                onClick={selectDayAnalysis}
+              >
+                Day Analysis
+              </div>
+              <div
+                className="Menu-option"
+                id="Settings-tag"
+                onClick={selectSettings}
+              >
+                Settings
+              </div>
             </div>
           </div>
-        </div>
+        </Suspense>
       </div>
     </div>
   );
