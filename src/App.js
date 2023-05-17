@@ -10,6 +10,7 @@ import PriceExplorer from "./StructureComponents/PriceExplorer";
 // import DayAnalysis from "./StructureComponents/DayAnalysis";
 // import CompTool from "./StructureComponents/CompTool";
 
+//lazy loading from react library to only import components when needed
 const DCATool = lazy(() => import("./StructureComponents/DCATool"));
 const BTDTool = lazy(() => import("./StructureComponents/BTDTool"));
 const YOLOTool = lazy(() => import("./StructureComponents/YOLOTool"));

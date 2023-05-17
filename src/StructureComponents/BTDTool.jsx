@@ -260,7 +260,7 @@ function BTDTool(props) {
         {results ? (
           <>
             <LineChart chartData={chartData} />
-            <div>
+            <div className="Results">
               <div className="Summary">Summary</div>
               <div>
                 Funds Invested: {props.marker}
@@ -279,27 +279,27 @@ function BTDTool(props) {
             </div>
           </>
         ) : (
-          <>
-            <p className="Explanation-main">
+          <div className="Explaination-main">
+            <p>
               This tool is designed to demonstrate the effect of investing using
               a buy the dip (BTD) approach.
             </p>
-            <ul>
-              <li className="Explanation-text">
+            <ul className="Explaination-points">
+              <li className="Explaination-text">
                 Buy the dip is a strategy popularised online. Essentially you
                 hold onto your savings and make purchases when the prices drop
                 significantly.
               </li>
-              <li className="Explanation-text">
+              <li className="Explaination-text">
                 Select an amount to invest and then a frequency of
                 daily/weekly/monthly finally select a start date.
               </li>
-              <li className="Explanation-text">
+              <li className="Explaination-text">
                 The tool will accrue your money at interval and deploy to
                 purchase BTC when the dip threshold is satisfied.
               </li>
             </ul>
-          </>
+          </div>
         )}
       </div>
     </div>

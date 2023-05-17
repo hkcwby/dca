@@ -194,7 +194,7 @@ function YOLOTool(props) {
         {results ? (
           <>
             <LineChart chartData={chartData} />
-            <div>
+            <div className="Results">
               <div className="Summary">Summary</div>
               <div>
                 Funds Invested: {props.marker}
@@ -213,32 +213,32 @@ function YOLOTool(props) {
             </div>
           </>
         ) : (
-          <>
-            <p className="Explanation-main">
+          <div className="Explaination-main">
+            <p>
               This tool is designed to demonstrate the effect of investing using
               an all or in or "You Only Live Once" (YOLO) strategy.
             </p>
-            <ul>
-              <li className="Explanation-text">
+            <ul className="Explaination-points">
+              <li className="Explaination-text">
                 YOLO is another popular strategy advertised on social media
                 where you take all your existing savings or even borrow to go
                 "all in" with the expectation that prospects are just too good.
               </li>
-              <li className="Explanation-text">
+              <li className="Explaination-text">
                 This method can yield very good or very bad results depending on
                 your investment time horizon and ultimately has a lot of
                 volatility that most investors might find unpalatable.
               </li>
-              <li className="Explanation-text">
+              <li className="Explaination-text">
                 Select an amount to invest and then a frequency of
                 daily/weekly/monthly finally select a start date.
               </li>
-              <li className="Explanation-text">
+              <li className="Explaination-text">
                 The tool assumes you purchase BTC equivelent of the investment
                 amount and then tracks its value in currency at each interval.
               </li>
             </ul>
-          </>
+          </div>
         )}
       </div>
     </div>

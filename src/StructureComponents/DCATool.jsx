@@ -201,7 +201,7 @@ function DCATool(props) {
           <>
             {" "}
             <LineChart chartData={chartData} />
-            <div>
+            <div className="Results">
               <div className="Summary">Summary</div>
               <div>
                 Funds Invested: {props.marker}
@@ -220,26 +220,26 @@ function DCATool(props) {
             </div>
           </>
         ) : (
-          <>
-            <p className="Explanation-main">
+          <div className="Explaination-main">
+            <p>
               This tool is designed to demonstrate the effect of investing using
               a dollar cost averaging (DCA).
             </p>
-            <ul>
-              <li className="Explanation-text">
+            <ul className="Explaination-points">
+              <li className="Explaination-text">
                 The concept is simple, you buy a fixed amount at a fixed
                 interval over time.
               </li>
-              <li className="Explanation-text">
+              <li className="Explaination-text">
                 Select an amount to invest and then a frequency of
                 daily/weekly/monthly finally select a start date.
               </li>
-              <li className="Explanation-text">
+              <li className="Explaination-text">
                 The tool takes pricing data and assumes you managed to buy at
                 the average of the high and low prices for that period.
               </li>
             </ul>
-          </>
+          </div>
         )}
       </div>
     </div>

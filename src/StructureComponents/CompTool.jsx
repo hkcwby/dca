@@ -305,7 +305,7 @@ function CompTool(props) {
         {results ? (
           <>
             <LineChart chartData={chartData} />
-            <div>
+            <div className="Results">
               <div>
                 Invested: {props.marker}
                 {Math.floor(
@@ -341,32 +341,32 @@ function CompTool(props) {
             </div>{" "}
           </>
         ) : (
-          <>
-            <p className="Explanation-main">
+          <div className="Explaination-main">
+            <p>
               This tool is designed to compare the various strategies assuming
               an equal starting investment.
             </p>
-            <ul>
-              <li className="Explanation-text">
+            <ul className="Explaination-points">
+              <li className="Explaination-text">
                 In this example all the investment is spent at the start with
                 the YOLO strategy.
               </li>
-              <li className="Explanation-text">
+              <li className="Explaination-text">
                 The investment is split into equal portions invested at each
                 period for the DCA strategy.
               </li>
-              <li className="Explanation-text">
+              <li className="Explaination-text">
                 The investment is split similar to the DCA strategy for the BTD
                 strategy but only invested when the dip threshold is met.
               </li>
-              <li className="Explanation-text">
+              <li className="Explaination-text">
                 Both the DCA and BTD strategies represent the present value of
                 Bitcoin purchased to date plus the remaining funds yet to be
                 invested, such that there is a fair measure to the YOLO result
                 in each period.
               </li>
             </ul>
-          </>
+          </div>
         )}
       </div>
     </div>
