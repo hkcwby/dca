@@ -203,11 +203,9 @@ function YOLOTool(props) {
               <div>
                 Present Value: {props.marker}
                 {chartData
-                  ? Math.floor(
-                      chartData.datasets[0].data[
-                        chartData.datasets[0].data.length - 1
-                      ]
-                    )
+                  ? chartData.datasets[1].data[
+                      chartData.datasets[1].data.length - 1
+                    ]
                   : "-"}
               </div>
             </div>
